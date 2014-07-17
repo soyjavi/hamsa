@@ -11,14 +11,15 @@
   "keywords": [ "mobile" ],
   "license": "MIT",
   "devDependencies": {
-    "gulp"        : "*",
-    "gulp-coffee" : "*",
-    "gulp-concat" : "*",
-    "gulp-connect": "*",
-    "gulp-header" : "*",
-    "gulp-jasmine": "*",
-    "gulp-karma"  : "*",
-    "gulp-uglify" : "*",
-    "gulp-util"   : "*"
+    "gulp"          : "*",
+    "gulp-coffee"   : "*",
+    "gulp-concat"   : "*",
+    "gulp-connect"  : "*",
+    "gulp-header"   : "*",
+    "gulp-jasmine"  : "*",
+    "gulp-karma"    : "*",
+    "gulp-uglify"   : "*",
+    "gulp-util"     : "*",
+    "karma-jasmine" : "*"
   }
 }
