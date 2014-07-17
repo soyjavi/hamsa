@@ -1,0 +1,4 @@
+hamsa
+=====
+
+Object.Observe Wrapper
