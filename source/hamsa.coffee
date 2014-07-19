@@ -15,16 +15,13 @@ class window.Hamsa
   # -- STATIC ------------------------------------------------------------------
   @records = {}
 
+  @observe: (callback) ->
+    Object.observe @records, (states) -> callback state for state in states
+
   @findBy: (name, value) ->
     for uid, record of @records when record[name] is value
       return record
     return null
-
-  # -- STATIC-events -----------------------------------------------------------
-  Object.observe @records, (states) ->
-    for state in states
-      console.log "hamsa.#{state.type.toUpperCase()}: ", state
-
 
   # -- INSTANCE ----------------------------------------------------------------
   constructor: (attributes) ->
@@ -32,12 +29,12 @@ class window.Hamsa
     @constructor.className = @constructor.name
     @constructor.records[@uid] = attributes
     Object.observe attributes, @onInstanceObserve
-    return attributes
+    @
 
   # -- INSTANCE-events ---------------------------------------------------------
-  onInstanceObserve: (states) ->
+  onInstanceObserve: (states) =>
     for state in states
-      console.log "HAMSA.Instance @uid.#{state.type} #{state.name} changed to #{state.object[state.name]} from #{state.oldValue}"
+      console.log "Hamsa.Instance >> [#{state.type}] >> #{state.name}: #{state.object[state.name]} (before #{state.oldValue})"
 
 _guid = ->
   'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace /[xy]/g, (c) ->
