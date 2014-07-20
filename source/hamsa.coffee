@@ -19,13 +19,14 @@ class window.Hamsa
   @records = {}
 
   ###
-  Observe changes in instance repository.
-  @method observe
-  @param  {function}  A function to execute each time the object is changed.
-  @return {object}    A object observe state.
+  Finds a determinate instance with a field attribute.
+  @method all
+  @return {array}     Array of all repository instances.
   ###
-  @observe: (callback) ->
-    Object.observe @records, (states) -> callback state for state in states
+  @all: ->
+    records = []
+    records.push record for uid, record of @records
+    return records
 
   ###
   Finds a determinate instance with a field attribute.
@@ -35,9 +36,18 @@ class window.Hamsa
   @return {object}    Hamsa instance.
   ###
   @findBy: (name, value) ->
-    for uid, record of @records when record[name] is value
-      return record
+    return record for uid, record of @records when record[name] is value
     return null
+
+  ###
+  Observe changes in instance repository.
+  @method observe
+  @param  {function}  A function to execute each time the object is changed.
+  @return {object}    A object observe state.
+  ###
+  @observe: (callback) ->
+    Object.observe @records, (states) -> callback state for state in states
+
 
   # -- INSTANCE ----------------------------------------------------------------
   ###
