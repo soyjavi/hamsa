@@ -20,7 +20,13 @@ var path = {
   // Sources
   source  : ['source/hamsa.coffee'],
   // Spec
-  spec    : ['spec/hamsa.coffee'] };
+  spec    : ['spec/hamsa.coffee']
+};
+
+
+var test = [
+  path.temp + '/spec.js',
+  path.temp + '/hamsa.js'];
 
 var banner = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
@@ -48,15 +54,15 @@ gulp.task('spec', function() {
     .pipe(coffee())
     .pipe(gulp.dest(path.temp));
 
-  var spec = [
-    path.temp + '/spec.js',
-    path.temp + '/hamsa.js'];
-
-  gulp.src(spec)
+  gulp.src(test)
     .pipe(karma({
       configFile: 'karma.js',
-      action: 'run'
-    }));
+      action    : 'run'
+    }))
+    .on('error', function(err) {
+      // Make sure failed tests cause gulp to exit non-zero
+      throw err;
+    });
 });
 
 gulp.task('init', function() {
@@ -64,6 +70,13 @@ gulp.task('init', function() {
 });
 
 gulp.task('default', function() {
-  gulp.watch(path.modules, ['source', 'spec']);
+  gulp.watch(path.source, ['source', 'spec']);
   gulp.watch(path.spec, ['spec']);
+
+  gulp.src(test)
+    .pipe(karma({
+      configFile: 'karma.js',
+      action: 'watch'
+  }));
+
 });
