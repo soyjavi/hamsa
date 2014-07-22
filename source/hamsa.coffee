@@ -16,7 +16,12 @@ class window.Hamsa
   ###
   Instance repository.
   ###
-  @records = {}
+  @records  = {}
+
+  ###
+  Observer reference
+  ###
+  @observer = undefined
 
   ###
   Finds a determinate instance with a field attribute.
@@ -46,7 +51,17 @@ class window.Hamsa
   @return {object}    A object observe state.
   ###
   @observe: (callback) ->
-    Object.observe @records, (states) -> callback state for state in states
+    @observer = Object.observe @records, (states) ->
+      callback state for state in states
+
+  ###
+  Observe changes in instance repository.
+  @method observe
+  @param  {function}  A function to execute each time the object is changed.
+  @return {object}    A object observe state.
+  ###
+  @unobserve: ->
+    Object.unobserve @records, @observer
 
 
   # -- INSTANCE ----------------------------------------------------------------
