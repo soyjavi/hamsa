@@ -10,6 +10,9 @@
   "main": ["quo.js"],
   "keywords": [ "mobile" ],
   "license": "MIT",
+  "dependencies": {
+    "coffee-script": "^1.8.0"
+  },
   "devDependencies": {
     "gulp"          : "*",
     "gulp-coffee"   : "*",
