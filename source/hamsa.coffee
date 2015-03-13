@@ -4,17 +4,15 @@ Basic Module with extend/include methods
 @namespace Atoms.Core
 @class Module
 
-@author Javier Jimenez Villar <javi@tapquo.com> || @soyjavi
+@author Javier Jimenez Villar <javi.jimenez.villar@gmail.com> || @soyjavi
 ###
 "use strict"
-
-MODULE_KEYWORDS = ['included', 'extended']
 
 class window.Hamsa
 
   # -- STATIC ------------------------------------------------------------------
   ###
-  Instance repository.
+  Instance repository
   ###
   @records  = {}
 
@@ -86,7 +84,12 @@ class window.Hamsa
   @return {object}    A object observe state.
   ###
   observe: (callback, add = true, update = true, destroy = true) ->
-    Object.observe @fields, (states) -> callback state for state in states
+    available = []
+    available.push "add" if add
+    available.push "update" if update
+    available.push "delete" if destroy
+    Object.observe @fields, (states) ->
+      callback state for state in states when state.type in available
 
 
 # -- PRIVATE -------------------------------------------------------------------
