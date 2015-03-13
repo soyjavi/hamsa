@@ -4,24 +4,23 @@
 gulp    = require "gulp"
 coffee  = require "gulp-coffee"
 concat  = require "gulp-concat"
+connect = require 'gulp-connect'
 gutil   = require "gulp-util"
 header  = require "gulp-header"
 jasmine = require "gulp-jasmine"
-karma   = require "gulp-karma"
+karma   = require('karma').server
 uglify  = require "gulp-uglify"
 pkg     = require "./package.json"
 
 # -- FILES ---------------------------------------------------------------------
 path =
   bower : "./bower"
-  temp  : "./build"
+  build : "./build"
   source: "source/hamsa.coffee"
   spec  : "spec/hamsa.coffee"
+  coffee: "**/**.coffee"
 
-test = [
-  path.temp + "/spec.js"
-  path.temp + "/hamsa.js"
-]
+test = ["#{path.build}/hamsa.js", "#{path.build}/spec.js"]
 
 banner = [
   "/**"
@@ -35,35 +34,37 @@ banner = [
 ].join("\n")
 
 # -- TASKS ---------------------------------------------------------------------
+gulp.task "webserver", ->
+  connect.server
+    port      : 8000
+    livereload: true
+
 gulp.task "source", ->
-  gulp.src(path.source)
-    .pipe(concat("hamsa.coffee"))
-    .pipe(coffee().on("error", gutil.log))
-    .pipe(gulp.dest(path.temp))
-    .pipe(uglify(mangle: true))
-    .pipe(header(banner, pkg: pkg))
-    .pipe(gulp.dest(path.bower))
+  gulp.src path.source
+    .pipe concat "hamsa.coffee"
+    .pipe coffee().on "error", gutil.log
+    .pipe gulp.dest path.build
+    .pipe uglify mangle: true
+    .pipe header banner, pkg: pkg
+    .pipe gulp.dest path.bower
+    .pipe connect.reload()
 
 gulp.task "spec", ->
-  gulp.src(path.spec)
-    .pipe(concat("spec.coffee"))
-    .pipe(coffee())
-    .pipe(gulp.dest(path.temp))
+  gulp.src path.spec
+    .pipe concat "spec.coffee"
+    .pipe coffee().on "error", gutil.log
+    .pipe gulp.dest path.build
+    .pipe connect.reload()
 
-  gulp.src(test).pipe(karma(
-    configFile: "karma.js"
-    action: "run"
-  )).on "error", (err) ->
-    throw err
+gulp.task "karma", ["source", "spec"], (done) ->
+  karma.start
+    configFile: __dirname + '/karma.js',
+    files     : test
+    singleRun : true
+  , done
 
-gulp.task "init", ->
-  gulp.run ["source", "spec"]
-
+gulp.task "init", ["source", "spec", "karma"]
 
 gulp.task "default", ->
-  gulp.watch path.source, ["source", "spec"]
-  gulp.watch path.spec, ["spec"]
-  gulp.src(test).pipe karma(
-    configFile: "karma.js"
-    action: "watch"
-  )
+  gulp.run ["webserver"]
+  gulp.watch path.coffee, ["karma"]

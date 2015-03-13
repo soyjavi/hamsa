@@ -14,9 +14,7 @@ module.exports = function(config) {
 
 
     // list of files / patterns to load in the browser
-    files: [
-        './build/hamsa.js',
-        './build/spec.js'],
+    // files: [],
 
 
     // list of files to exclude
@@ -35,7 +33,7 @@ module.exports = function(config) {
 
 
     // web server port
-    port: 9876,
+    port: 8001,
 
 
     // enable / disable colors in the output (reporters and logs)
@@ -53,7 +51,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode
