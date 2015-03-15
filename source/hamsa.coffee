@@ -8,6 +8,8 @@ Basic Module with extend/include methods
 ###
 "use strict"
 
+DEFAULT_EVENTS = ["add", "update", "delete"]
+
 class window.Hamsa
 
   # -- STATIC ------------------------------------------------------------------
@@ -48,14 +50,14 @@ class window.Hamsa
   @param  {function}  A function to execute each time the object is changed.
   @return {object}    A object observe state.
   ###
-  @observe: (callback) ->
+  @observe: (callback, events = DEFAULT_EVENTS) ->
     @observer = Object.observe @records, (states) ->
       callback state for state in states
+    , events
 
   ###
-  Observe changes in instance repository.
-  @method observe
-  @param  {function}  A function to execute each time the object is changed.
+  Unobserve changes in instance repository.
+  @method unobserve
   @return {object}    A object observe state.
   ###
   @unobserve: ->
@@ -70,11 +72,10 @@ class window.Hamsa
   @param  {function}  A function to execute each time the fields change.
   @return {object}    Hamsa instance.
   ###
-  constructor: (@fields, observeCallback) ->
-    @uid = _guid()
+  constructor: (@fields, callback, events = DEFAULT_EVENTS) ->
     @constructor.className = @constructor.name
-    @constructor.records[@uid] = @fields
-    @observe observeCallback if observeCallback?
+    @constructor.records[@uid = _guid()] = @fields
+    @observe callback, events if observe?
     @
 
   ###
@@ -83,13 +84,18 @@ class window.Hamsa
   @param  {function}  A function to execute each time the fields change.
   @return {object}    A object observe state.
   ###
-  observe: (callback, add = true, update = true, destroy = true) ->
-    available = []
-    available.push "add" if add
-    available.push "update" if update
-    available.push "delete" if destroy
-    Object.observe @fields, (states) ->
-      callback state for state in states when state.type in available
+  observe: (callback, events = DEFAULT_EVENTS) ->
+    @observer = Object.observe @fields, (states) ->
+      callback state for state in states
+    , events
+
+  ###
+  Unobserve changes in a determinate Hamsa instance.
+  @method unobserve
+  @return {object}    A object observe state.
+  ###
+  unobserve: ->
+    Object.unobserve @fields, @observer
 
 
 # -- PRIVATE -------------------------------------------------------------------
