@@ -24,7 +24,7 @@ class window.Hamsa
   @observer = undefined
 
   ###
-  Finds a determinate instance with a field attribute.
+  Returns all instances of the Class
   @method all
   @return {array}     Array of all repository instances.
   ###
@@ -32,6 +32,15 @@ class window.Hamsa
     records = []
     records.push record for uid, record of @records
     return records
+
+  ###
+  Destroy all instances of the Class
+  @method destroyAll
+  @return {array}     Empty array of all repository instances.
+  ###
+  @destroyAll: ->
+    delete @records[uid] for uid of @records
+    return @records
 
   ###
   Finds a determinate instance with a field attribute.
