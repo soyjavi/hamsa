@@ -31,7 +31,7 @@ class window.Hamsa
   @all: ->
     records = []
     records.push record for uid, record of @records
-    return records
+    records
 
   ###
   Destroy all instances of the Class
@@ -40,7 +40,7 @@ class window.Hamsa
   ###
   @destroyAll: ->
     delete @records[uid] for uid of @records
-    return @records
+    @records
 
   ###
   Finds a determinate instance with a field attribute.
@@ -50,8 +50,7 @@ class window.Hamsa
   @return {object}    Hamsa instance.
   ###
   @findBy: (name, value) ->
-    return record for uid, record of @records when record[name] is value
-    return null
+    record for uid, record of @records when record[name] is value
 
   ###
   Observe changes in instance repository.
