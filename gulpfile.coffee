@@ -18,7 +18,8 @@ path =
   build : "./build"
   source: "source/hamsa.coffee"
   spec  : "spec/hamsa.coffee"
-  coffee: "**/**.coffee"
+  test  : "spec/test.coffee"
+  coffee: "*/**.coffee"
 
 test = ["#{path.build}/hamsa.js", "#{path.build}/spec.js"]
 
@@ -47,11 +48,16 @@ gulp.task "source", ->
     .pipe uglify mangle: true
     .pipe header banner, pkg: pkg
     .pipe gulp.dest path.bower
-    .pipe connect.reload()
 
 gulp.task "spec", ->
   gulp.src path.spec
     .pipe concat "spec.coffee"
+    .pipe coffee().on "error", gutil.log
+    .pipe gulp.dest path.build
+
+gulp.task "test", ->
+  gulp.src path.test
+    .pipe concat "test.coffee"
     .pipe coffee().on "error", gutil.log
     .pipe gulp.dest path.build
     .pipe connect.reload()
@@ -60,10 +66,10 @@ gulp.task "karma", ["source", "spec"], (done) ->
   karma.start
     configFile: __dirname + '/karma.js',
     files     : test
-    singleRun : true
+    singleRun : false
   , done
 
-gulp.task "init", ["source", "spec", "karma"]
+gulp.task "init", ["source", "spec", "test", "karma"]
 
 gulp.task "default", ->
   gulp.run ["webserver"]
