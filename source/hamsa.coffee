@@ -1,10 +1,10 @@
 ###
-Basic Module with extend/include methods
+Basic Module
 
-@namespace Atoms.Core
-@class Module
+@namespace  Hamsa
+@class      Module
 
-@author Javier Jimenez Villar <javi.jimenez.villar@gmail.com> || @soyjavi
+@author     Javier Jimenez Villar <javi.jimenez.villar@gmail.com> || @soyjavi
 ###
 "use strict"
 
@@ -22,6 +22,16 @@ class window.Hamsa
   Observer reference
   ###
   @observer = undefined
+
+  ###
+  Set a array of fields used in the Class
+  @method fields
+  @param  {string}    Unknown arguments, each argument is the name of field.
+  ###
+  @fields: (attributes...) ->
+    @records = {}
+    @attributes = attributes or []
+    @
 
   ###
   Returns all instances of the Class
@@ -58,9 +68,9 @@ class window.Hamsa
   @param  {function}  A function to execute each time the object is changed.
   @return {object}    A object observe state.
   ###
-  @observe: (callback, events = DEFAULT_EVENTS) ->
+  @observe: (handler, events = DEFAULT_EVENTS) ->
     @observer = Object.observe @records, (states) ->
-      callback state for state in states
+      handler state for state in states
     , events
 
   ###
@@ -80,10 +90,15 @@ class window.Hamsa
   @param  {function}  A function to execute each time the fields change.
   @return {object}    Hamsa instance.
   ###
-  constructor: (@fields, callback, events = DEFAULT_EVENTS) ->
+  constructor: (attributes = {}, handler, events = DEFAULT_EVENTS) ->
     @constructor.className = @constructor.name
-    @constructor.records[@uid = _guid()] = @fields
-    @observe callback, events if observe?
+    @constructor.records[@uid = _guid()] = @
+    for key, value of attributes
+      if typeof @[key] is 'function'
+        @[key](value)
+      else
+        @[key] = value
+    @observe handler, events if handler?
     @
 
   ###
@@ -92,9 +107,11 @@ class window.Hamsa
   @param  {function}  A function to execute each time the fields change.
   @return {object}    A object observe state.
   ###
-  observe: (callback, events = DEFAULT_EVENTS) ->
-    @observer = Object.observe @fields, (states) ->
-      callback state for state in states
+  observe: (handler, events = DEFAULT_EVENTS) ->
+    @observer = Object.observe @, (states) ->
+      for state in states when state.name isnt "observer"
+        delete state.object.observer
+        handler state
     , events
 
   ###
