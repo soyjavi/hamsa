@@ -17,6 +17,8 @@ class window.Hamsa
   Instance repository
   ###
   @records  = {}
+  @fields   = {}
+  @names    = []
 
   ###
   Observer reference
@@ -28,9 +30,9 @@ class window.Hamsa
   @method fields
   @param  {string}    Unknown arguments, each argument is the name of field.
   ###
-  @fields: (attributes...) ->
+  @define: (@fields = {}) ->
     @records = {}
-    @attributes = attributes or []
+    @names = (field for field of @fields)
     @
 
   ###
@@ -38,10 +40,16 @@ class window.Hamsa
   @method all
   @return {array}     Array of all repository instances.
   ###
-  @all: ->
-    records = []
-    records.push record for uid, record of @records
-    records
+  @all: -> do @find
+
+  ###
+  Returns instances of the defined Hamsa Class
+  @method find
+  @param  {function}  [OPTIONAL] Function for filter instances
+  @return {array}     Array of Hamsa instances
+  ###
+  @find: (filter) ->
+    (record for uid, record of @records when not filter or filter record)
 
   ###
   Destroy all instances of the Class
@@ -93,11 +101,11 @@ class window.Hamsa
   constructor: (attributes = {}, handler, events = DEFAULT_EVENTS) ->
     @constructor.className = @constructor.name
     @constructor.records[@uid = _guid()] = @
-    for key, value of attributes
-      if typeof @[key] is 'function'
-        @[key](value)
+    for field, define of @constructor.fields when attributes[field] or define.default?
+      if typeof @[field] is 'function'
+        @[field] attributes[field] or define.default
       else
-        @[key] = value
+        @[field] = attributes[field] or define.default
     @observe handler, events if handler?
     @
 
@@ -108,8 +116,8 @@ class window.Hamsa
   @return {object}    A object observe state.
   ###
   observe: (handler, events = DEFAULT_EVENTS) ->
-    @observer = Object.observe @, (states) ->
-      for state in states when state.name isnt "observer"
+    @observer = Object.observe @, (states) =>
+      for state in states when state.name in @constructor.names
         delete state.object.observer
         handler state
     , events
@@ -119,9 +127,14 @@ class window.Hamsa
   @method unobserve
   @return {object}    A object observe state.
   ###
-  unobserve: ->
-    Object.unobserve @fields, @observer
+  unobserve: -> Object.unobserve @fields, @observer
 
+  ###
+  Destroy current Hamsa instance
+  @method destroy
+  @return {object}    Current Hamsa instance
+  ###
+  destroy: -> delete @constructor.records[@uid]
 
 # -- PRIVATE -------------------------------------------------------------------
 _guid = ->
