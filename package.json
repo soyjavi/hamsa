@@ -1,11 +1,11 @@
 {
   "name": "hamsa",
-  "version": "0.14.13",
+  "version": "0.14.20",
   "description": "Object.Observe wrapper.",
-  "homepage": "https://github.com/soyjavi/hamsa",
+  "homepage": "http://gethamsa.com",
   "author": {
     "name": "Javi Jimenez Villar (@soyjavi)",
-    "site": "https://twitter.com/soyjavi"
+    "site": "http://soyjavi.com"
   },
   "main": ["hamsa.js"],
   "keywords": [ "mobile" ],
@@ -20,6 +20,7 @@
     "gulp-connect"              : "*",
     "gulp-header"               : "*",
     "gulp-jasmine"              : "*",
+    "gulp-stylus"               : "*",
     "gulp-uglify"               : "*",
     "gulp-util"                 : "*",
     "karma"                     : "*",

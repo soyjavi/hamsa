@@ -1,0 +1,18 @@
+{
+    "name": "hamsa-site",
+    "version": "1.0.0",
+    "directory": "dependencies/bower",
+    "componentsDirectory": "dependencies/bower",
+    "ignore": [
+            "**/.*",
+            "node_modules",
+            "bower_components",
+            "test",
+            "tests"
+    ],
+    "dependencies": {
+        "flexo"            : "*",
+        "jquery"           : "*",
+        "stylmethods"      : "*"
+    }
+}
