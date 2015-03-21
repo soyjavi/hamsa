@@ -20,8 +20,9 @@
       <li><strong>Basics</strong></li>
       <li><a href="#intro">Introduction</a></li>
       <li><a href="#define">Define</a></li>
-      <li><a href="#typography">Observe</a></li>
-      <li><a href="#button">Select</a></li>
+      <li><a href="#instances">Instances</a></li>
+      <li><a href="#observe">Observe</a></li>
+      <li><a href="#select">Select</a></li>
       <li><strong>More</strong></li>
       <li><a href="https://github.com/soyjavi/hamsa">Contribute</a></li>
       <li><a href="https://github.com/soyjavi/hamsa/archive/1.0.0.zip">Download</a></li>
@@ -34,7 +35,7 @@
   <article class="scroll">
     <div class="align center landing">
       <h1>hamsa</h1>
-      <h5>A dead simple, responsive & <span class="color theme">flexible</span> boilerplate.</h5>
+      <h5>A dead simple, data-binding & observable <span class="color theme">model</span>.</h5>
       <a href="https://github.com/soyjavi/hamsa/archive/1.0.0.zip" class="button">Download</a>
       <a href="https://github.com/soyjavi/hamsa" class="button">Github</a>
       <button disabled>bower install <strong>hamsa</strong></button>
@@ -43,21 +44,22 @@
     <div class="bck dark">
       <div class="container">
         <section id="intro" class="row">
-          <h6>IS <span class="color theme">HAMSA</span> FOR YOU?</h6>
+          <h6>IS <span class="color theme">hamsa</span> FOR YOU?</h6>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            A revolution is coming. There’s a new addition to JavaScript that’s going to change everything you think you know about data-binding. It’s also going to change how many of your MVC libraries approach observing models for edits and updates. Are you ready for some sweet performance boosts to apps that care about property observation? <span class="color white">Object.observe()</span>, part of a future ECMAScript standard, is a method for asynchronously observing changes to JavaScript objects...without the need for a separate library. It allows an observer to receive a time-ordered sequence of change records which describe the set of changes which took place to a set of observed objects.
           </p>
-          </p>
-            Love Flexo and want to Tweet it, share it, or star it? Well, I appreciate that
+          <p>
+            Hamsa will help you use this new specification today. No need to worry if your browser supports Object.Observe () because Hamsa comes with polyfill perfect for those older browsers. Anyway, it is much more than a polyfill the main objective is to provide you a system object modeling javascript for all your projects. You can create complex models and control all its mutations. It's time to start working with Hamsa...
           </p>
         </section>
 
         <!-- Define a Hamsa Class ------------------------------------------ -->
         <section id="define" class="row">
-          <h6>YOUR FIRST <span class="color theme">CLASS</span></h6>
+          <h6><span class="color theme">DEFINE</span> YOUR FIRST hamsa CLASS</h6>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            Usually you find MVC frameworks where the model becomes complex and heavy. With Hamsa wont have that feeling, the model does exactly what you need without becoming complex conventions, simple but powerfull, let's see how to create one:
           </p>
+
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
             <button data-language="javascript">.js</button></nav>
@@ -93,35 +95,209 @@ var Contact = (function(_super) {
   return Contact;
 
 })(Hamsa);</code></pre>
+          <p>
+            As you can see you have to use the inherited function <code>@define</code> for setting fields will have your model. Must indicate the type of security you need and if you can set a default value. Easy, right? Ipsum.
+          </p>
         </section>
 
-        <!-- Instance -->
-        <section id="intro" class="row">
-          <h6>YOUR FIRST <span class="color theme">CLASS</span></h6>
+        <!-- INSTANCES ----------------------------------------------------- -->
+        <section id="instances" class="row">
+          <h6>CREATING hamsa <span class="color theme">INSTANCES</span></h6>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            Once you have defined your first Hamsa class you can start creating new instances of it. As you'll be able to check is really easy:
           </p>
-
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
             <button data-language="javascript">.js</button></nav>
           <pre class="active"><code class="coffeescript">
-Contact.observe (state) -> console.log "Contact.observe", state</code></pre>
+contact = new Contact()
+#> {avatar: "http://gravatar.org", since: 2015, created_at: Sat Mar 21 2015 16:21:04 GMT+0700 (ICT)}</code></pre>
 
           <pre><code class="javascript">
-Contact.observe(function(state) {
-  return console.log("Contact.observe", state);
-});</code></pre>
+var contact = new Contact();
+/*
+{
+  avatar    : "http://gravatar.org",
+  since     : 2015,
+  created_at: Sat Mar 21 2015 16:21:04 GMT+0700 (ICT)
+}
+*/</code></pre>
+          <p>
+            This is the simplest example, instantiating has no parameters but as you can see the default fields are filled. Now that we have our instance we can create, modify or delete their fields.
+          </p>
+          <nav>
+              <button data-language="coffeescript" class="active">.coffee</button>
+              <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+contact.username = "@soyjavi"
+contact.mail = "hi@soyjavi.com"
+delete contact.since</code></pre>
+          <pre><code class="javascript">
+contact.username = "@soyjavi";
+contact.mail = "hi@soyjavi.com";
+delete contact.since;</code></pre>
 
+          <p>Now we will create a new instance by setting values for certain fields:</p>
+          <nav>
+              <button data-language="coffeescript" class="active">.coffee</button>
+              <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+contact = new Contact username: "@soyjavi", since: 1980
+#> {username: "@soyjavi", since: 1980, avatar: "http://gravatar.org", created_at: Sat Mar 21 2015 16:21:04 GMT+0700 (ICT)}</code></pre>
+
+          <pre><code class="javascript">
+var contact = new Contact({username: "@soyjavi", since: 1980});
+/*
+{
+  username  : "@soyjavi",
+  avatar    : "http://gravatar.org",
+  since     : 1980,
+  created_at: Sat Mar 21 2015 16:21:04 GMT+0700 (ICT)
+}
+*/</code></pre>
+          <p>
+            If you want to delete a particular instance you only have to use the <code>destroy</code> method and hamsa do the rest. In the next chapter we will learn to observe the mutations both instances and class.
+          </p>
+          <nav>
+              <button data-language="coffeescript" class="active">.coffee</button>
+              <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+contact.destroy()
+#> undefined</code></pre>
+
+          <pre><code class="javascript">
+contact.destroy;
+/* > undefined */</code></pre>
         </section>
 
 
-      <pre><code>
+        <!-- OBSERVE ------------------------------------------------------- -->
+        <section id="observe" class="row">
+          <h6><span class="color theme">OBSERVE</span> YOUR CHANGES</h6>
+          <p>
+            Now that you know how to create your own Hamsa classes and how to create instances of these. Now you should know as you can see both mutations Hamsa class and its instances. We will begin to observe, <code>Contact</code>, the Hamsa class you have defined in our case. You only have to define a function for collect mutations and also set the mutations we want observe:
+          </p>
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+Contact.observe (state) ->
+  console.log "Contact.observe", state
+, MUTATIONS = ["add", "delete"]</code></pre>
+          <pre><code class="javascript">
+var MUTATIONS = ["add", "delete"];
+
+Contact.observe(function(state) {
+  return console.log("Contact.observe", state);
+}, MUTATIONS);</code></pre>
+          <p>
+            To start observing a Hamsa Class just have to have to use the <code>observe</code> method. The first parameter is the callback function and the second one is an array of mutations that you want to observe. Now, you can create instances of your hamsa Class and see how each new instance (if you have subscribed to the <code>"new"</code> mutation) have a message on your console.
+          </p>
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
 contact = new Contact()
-console.log(contact)
+###
+> Contact.observe {
+  type  : "add",
+  object: Object,
+  ...}
+###</code></pre>
+          <pre><code class="javascript">
+var contact = new Contact();
+/*
+> Contact.observe {
+  type  : "add",
+  object: Object,
+  ...}
+*/</code></pre>
 
-  </code></pre>
+          <p>
+            If you have subscribed to the mutation <code>"delete"</code> you can delete any of your instances and watch as the observer reported on your console change.
+          </p>
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+contact.destroy()
+###
+> Contact.observe {
+  type  : "delete",
+  object: Object,
+  ...}
+###</code></pre>
+          <pre><code class="javascript">
+contact.destroy();
+/*
+> Contact.observe {
+  type  : "delete",
+  object: Object,
+  ...}
+*/</code></pre>
 
+          <p>
+            As has been shown is easy to observe the mutations of Hamsa class. Now you will learn to manage mutations in a particular instance, for it can do in two ways. The first is the same as the class using the <code>observe</code> method:
+          </p>
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+callback = (state) -> console.log "#{state.object.username}.observe", state
+
+contact.observe callback, MUTATIONS = ["update", "delete"]</code></pre>
+          <pre><code class="javascript">
+var MUTATIONS = ["update", "delete"];
+var callback = function(state) {
+  return console.log(state.object.username + ".observe", state);
+};
+
+contact.observe(callback, MUTATIONS);</code></pre>
+
+          <p>
+            The second way is to define the observer when creating the instance:
+          </p>
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+javi = new Contact username: "@soyjavi", callback, ["add", "update"]</code></pre>
+          <pre><code class="javascript">
+var javi = new Contact({username: "@soyjavi"}, callback, ["add", "update"]);</code></pre>
+
+
+          <p>
+            Now also if you modify or create (remember you only observe mutations <code>"add"</code> and <code>"update"</code>) any of the fields of your instance we shall have a reference of that change in your console:
+          </p>
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+javi.username = "@javi"
+###
+> @javi.observe {
+  type  : "update",
+  object: Object,
+  ...}
+###</code></pre>
+          <pre><code class="javascript">
+javi.username = "@javi";
+/*
+> @javi.observe {
+  type  : "update",
+  object: Object,
+  ...}
+*/</code></pre>
+
+          <p>
+
+          </p>
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript"></code></pre>
+          <pre><code class="javascript"></code></pre>
+        </section>
 
       </div>
     </div>

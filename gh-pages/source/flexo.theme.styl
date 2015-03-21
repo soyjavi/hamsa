@@ -1,23 +1,30 @@
 body
-  color                     : COLOR
-  background-color          : BACKGROUND
-  font-family: "Dosis", sans-serif
+  color                       : COLOR
+  background-color            : BACKGROUND
+  font-family                 : "Dosis", sans-serif
+  font-smoothing              : antialiased
+  -moz-font-smoothing         : antialiased
+  -webkit-font-smoothing      : antialiased
+  -webkit-font-smoothing      : subpixel-antialiased
+  *
+    -webkit-font-smoothing    : antialiased
+    -moz-osx-font-smoothing   : grayscale
 
 .color
   &.white
-    color                   : WHITE
+    color                     : WHITE
   &.theme
-    color                   : THEME
+    color                     : THEME
 
 .row
-  margin-bottom             : 1.5rem
+  margin-bottom               : 1.5rem
 
 // -- BUTTON -------------------------------------------------------------------
 .button, button, input[type="submit"], input[type="reset"], input[type="button"]
-  font-weight               : bold
-  text-transform            : uppercase
-  letter-spacing            : .1rem
-  border-radius             : BORDER_RADIUS
+  font-weight                 : bold
+  text-transform              : uppercase
+  letter-spacing              : .1rem
+  border-radius               : BORDER_RADIUS
   &:not([disabled])
     color                     : COLOR = alpha(THEME, 100%)
     border                    : 1px solid alpha(THEME, 25%)
@@ -30,23 +37,23 @@ body
 // -- FORM ---------------------------------------------------------------------
 input[type="email"], input[type="search"], input[type="text"], input[type="tel"],
 input[type="url"], input[type="password"], textarea, select
-  background-color          : WHITE
-  border                    : 1px solid darken(BACKGROUND, 15%)
-  border-radius             : BORDER_RADIUS
+  background-color            : WHITE
+  border                      : 1px solid darken(BACKGROUND, 15%)
+  border-radius               : BORDER_RADIUS
   &:focus
-    border                  : 1px solid darken(BACKGROUND, 30%)
+    border                    : 1px solid darken(BACKGROUND, 30%)
 
 // -- TABLE ---------------------------------------------------------------------
 table
   th, td
-    border-bottom           : 1px solid darken(BACKGROUND, 10%)
+    border-bottom             : 1px solid darken(BACKGROUND, 10%)
 
 // -- CODE ---------------------------------------------------------------------
 code
-  margin-top                : -(1.25 * U)
+  margin-top                  : -(1.25 * U)
 
 // -- COMMON -------------------------------------------------------------------
 code, button[disabled]
-  color                     : lighten(COLOR, 75%) !important
-  background                : darken(BACKGROUND, 50%) !important
-  border                    : 1px solid darken(BACKGROUND, 5%) !important
+  color                       : lighten(COLOR, 75%) !important
+  background                  : darken(BACKGROUND, 50%) !important
+  border                      : 1px solid darken(BACKGROUND, 5%) !important

@@ -3,15 +3,17 @@
     display: none !important
 
 aside
-  background-color: darken(BACKGROUND, 25%)
+  background-color                      : darken(BACKGROUND, 25%)
   header, ul, footer
-    padding: 1rem 1.5rem
+    padding                             : U (1.5 * U)
   header
     font-family                         : 'Righteous', cursive
-    background-color                    : rgba(0,0,0,0.1)
     font-size                           : 125%
     > small
-      opacity                           : 0.75
+      opacity                           : 0.5
+      font-size                         : 60%
+  header, footer
+    background-color                    : rgba(0,0,0,0.1)
   strong
     font-size                           : 80%
   a
@@ -21,7 +23,6 @@ aside
       color                             : WHITE
   footer
     font-size                           : 75%
-    background-color                    : rgba(255,255,255,0.025)
     line-height                         : 2rem
     img
       height                            : SIZE = (1.75 * U)
@@ -34,7 +35,7 @@ aside
       font-weight                       : bold
 
 .landing
-  margin                                : 5rem 0
+  margin                                : (6 * U) 0 0 0
   h1
     font-size                           : 6rem
   h5
@@ -50,8 +51,15 @@ h1, h2, h3, h4, h5, h6
 
 nav
   text-align                            : right
+  margin-bottom                         : -(2.85 * U)
+  margin-right                          : (U / 2)
+  opacity                               : 0.85
   button
-    margin                              : 0 0 0 (U / 2)
+    height                              : HEIGHT = (1.5 * U)
+    margin                              : 0
+    padding                             : 0 (U / 2)
+    font-size                           : 70%
+    line-height                         : HEIGHT
 
 .row > h6
   padding-top                           : 2rem
