@@ -1,0 +1,135 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <title>Hamsa</title>
+  <meta name="description" content="A dead simple, responsive & flexible boilerplate">
+  <meta name="author" content="@soyjavi">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href='http://fonts.googleapis.com/css?family=Dosis:400,700|Righteous' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="bower_components/flexo/dist/flexo.css">
+  <link rel="stylesheet" href="gh-pages/site.css">
+  <link rel="stylesheet" href="https://raw.githubusercontent.com/isagalaev/highlight.js/master/src/styles/monokai_sublime.css">
+
+
+  <link rel="icon" type="image/png" href="gh-pages/favicon.png">
+</head>
+
+<body data-flex="horizontal grow">
+  <aside class="color white" data-column="2" data-flex="vertical">
+    <header>hamsa <small>1.0.0</small></header>
+    <ul data-flex="vertical" class="none" data-flex-grow="max">
+      <li><strong>Basics</strong></li>
+      <li><a href="#intro">Introduction</a></li>
+      <li><a href="#define">Define</a></li>
+      <li><a href="#typography">Observe</a></li>
+      <li><a href="#button">Select</a></li>
+      <li><strong>More</strong></li>
+      <li><a href="https://github.com/soyjavi/hamsa">Contribute</a></li>
+      <li><a href="https://github.com/soyjavi/hamsa/archive/1.0.0.zip">Download</a></li>
+      <li><a href="https://github.com/soyjavi/hamsa/issues">Help</a></li>
+    </ul>
+    <footer data-flex="horizontal" data-flex-grow="min">
+      <img src="http://cdn.tapquo.com/photos/soyjavi.jpg" />by<a href="http://soyjavi.com" target="_blank">@soyjavi</a></footer>
+  </aside>
+
+  <article class="scroll">
+    <div class="align center landing">
+      <h1>hamsa</h1>
+      <h5>A dead simple, responsive & <span class="color theme">flexible</span> boilerplate.</h5>
+      <a href="https://github.com/soyjavi/hamsa/archive/1.0.0.zip" class="button">Download</a>
+      <a href="https://github.com/soyjavi/hamsa" class="button">Github</a>
+      <button disabled>bower install <strong>hamsa</strong></button>
+    </div>
+
+    <div class="bck dark">
+      <div class="container">
+        <section id="intro" class="row">
+          <h6>IS <span class="color theme">HAMSA</span> FOR YOU?</h6>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          </p>
+          </p>
+            Love Flexo and want to Tweet it, share it, or star it? Well, I appreciate that
+          </p>
+        </section>
+
+        <!-- Define a Hamsa Class ------------------------------------------ -->
+        <section id="define" class="row">
+          <h6>YOUR FIRST <span class="color theme">CLASS</span></h6>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          </p>
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+class Contact extends Hamsa
+  @define
+    id              : type: String
+    mail            : type: String
+    username        : type: String
+    avatar          : type: String, default: "http://gravatar.org"
+    networks        : type: Object
+    since           : type: Number, default: 2015
+    created_at      : type: Date, default: new Date()</code></pre>
+
+        <pre><code class="javascript">
+var Contact = (function(_super) {
+  __extends(Contact, _super);
+
+  function Contact() {
+    return Contact.__super__.constructor.apply(this, arguments);
+  }
+
+  Contact.define({
+    id        : { type: String },
+    mail      : { type: String },
+    username  : { type: String },
+    avatar    : { type: String, default: "http://gravatar.org" },
+    networks  : { type: Object },
+    since     : { type: Number, default: 2015 },
+    created_at: { type: Date, default: new Date() }
+  });
+
+  return Contact;
+
+})(Hamsa);</code></pre>
+        </section>
+
+        <!-- Instance -->
+        <section id="intro" class="row">
+          <h6>YOUR FIRST <span class="color theme">CLASS</span></h6>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          </p>
+
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+Contact.observe (state) -> console.log "Contact.observe", state</code></pre>
+
+          <pre><code class="javascript">
+Contact.observe(function(state) {
+  return console.log("Contact.observe", state);
+});</code></pre>
+
+        </section>
+
+
+      <pre><code>
+contact = new Contact()
+console.log(contact)
+
+  </code></pre>
+
+
+      </div>
+    </div>
+  </article>
+
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <!-- // <script src="bower_components/jquery/dist/jquery.min.map"></script> -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+  <script src="gh-pages/site.js"></script>
+</body>
+</html>

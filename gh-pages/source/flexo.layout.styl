@@ -1,0 +1,64 @@
+@media (max-width: 1024px)
+  aside
+    display: none !important
+
+aside
+  background-color: darken(BACKGROUND, 25%)
+  header, ul, footer
+    padding: 1rem 1.5rem
+  header
+    font-family                         : 'Righteous', cursive
+    background-color                    : rgba(0,0,0,0.1)
+    font-size                           : 125%
+    > small
+      opacity                           : 0.75
+  strong
+    font-size                           : 80%
+  a
+    text-decoration                     : none
+    color                               : THEME
+    &:hover
+      color                             : WHITE
+  footer
+    font-size                           : 75%
+    background-color                    : rgba(255,255,255,0.025)
+    line-height                         : 2rem
+    img
+      height                            : SIZE = (1.75 * U)
+      width                             : SIZE
+      margin-right                      : (U / 2)
+      border-radius                     : (SIZE / 2)
+      box-shadow                        : 0 0 0 (U / 8) THEME
+    a
+      margin-left                       : (U / 3)
+      font-weight                       : bold
+
+.landing
+  margin                                : 5rem 0
+  h1
+    font-size                           : 6rem
+  h5
+    padding                             : 0 2.5%
+
+.container
+  padding                               : 4rem 0
+
+h1, h2, h3, h4, h5, h6
+  font-family                           : 'Righteous', cursive
+  font-weight                           : normal
+  color                                 : WHITE
+
+nav
+  text-align                            : right
+  button
+    margin                              : 0 0 0 (U / 2)
+
+.row > h6
+  padding-top                           : 2rem
+  margin-bottom                         : .5rem
+
+pre
+  &:not(.active)
+    display                             : none
+  &.active
+    display                             : block
