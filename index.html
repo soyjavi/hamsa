@@ -15,7 +15,7 @@
 
 <body data-flex="horizontal grow">
   <aside class="color white" data-column="2" data-flex="vertical">
-    <header>hamsa <small>1.0.0</small></header>
+    <header>hamsa <small>0.3.22</small></header>
     <ul data-flex="vertical" class="none" data-flex-grow="max">
       <li><strong>Basics</strong></li>
       <li><a href="#intro">Introduction</a></li>
@@ -24,19 +24,19 @@
       <li><a href="#observe">Observe</a></li>
       <li><a href="#select">Select</a></li>
       <li><strong>More</strong></li>
-      <li><a href="https://github.com/soyjavi/hamsa">Contribute</a></li>
-      <li><a href="https://github.com/soyjavi/hamsa/archive/1.0.0.zip">Download</a></li>
-      <li><a href="https://github.com/soyjavi/hamsa/issues">Help</a></li>
+      <li><a target="_blank" href="https://github.com/soyjavi/hamsa">Contribute</a></li>
+      <li><a target="_blank" href="https://github.com/soyjavi/hamsa/archive/0.3.22.zip">Download</a></li>
+      <li><a target="_blank" href="https://github.com/soyjavi/hamsa/issues">Help</a></li>
     </ul>
     <footer data-flex="horizontal" data-flex-grow="min">
-      <img src="http://cdn.tapquo.com/photos/soyjavi.jpg" />by<a href="http://soyjavi.com" target="_blank">@soyjavi</a></footer>
+      <img src="http://cdn.tapquo.com/photos/soyjavi.jpg" /><small>by</small><a href="http://soyjavi.com" target="_blank">@soyjavi</a></footer>
   </aside>
 
   <article class="scroll">
     <div class="align center landing">
       <h1>hamsa</h1>
       <h5>A dead simple, data-binding & observable <span class="color theme">model</span>.</h5>
-      <a href="https://github.com/soyjavi/hamsa/archive/1.0.0.zip" class="button">Download</a>
+      <a href="https://github.com/soyjavi/hamsa/archive/0.3.22.zip" class="button">Download</a>
       <a href="https://github.com/soyjavi/hamsa" class="button">Github</a>
       <button disabled>bower install <strong>hamsa</strong></button>
     </div>
@@ -49,7 +49,7 @@
             A revolution is coming. There’s a new addition to JavaScript that’s going to change everything you think you know about data-binding. It’s also going to change how many of your MVC libraries approach observing models for edits and updates. Are you ready for some sweet performance boosts to apps that care about property observation? <span class="color white">Object.observe()</span>, part of a future ECMAScript standard, is a method for asynchronously observing changes to JavaScript objects...without the need for a separate library. It allows an observer to receive a time-ordered sequence of change records which describe the set of changes which took place to a set of observed objects.
           </p>
           <p>
-            Hamsa will help you use this new specification today. No need to worry if your browser supports Object.Observe () because Hamsa comes with polyfill perfect for those older browsers. Anyway, it is much more than a polyfill the main objective is to provide you a system object modeling javascript for all your projects. You can create complex models and control all its mutations. It's time to start working with Hamsa...
+            Hamsa will help you use this new specification today. No need to worry if your browser supports <code>Object.Observe()</code> because Hamsa comes with polyfill perfect for those older browsers. Anyway, it is much more than a polyfill the main objective is to provide you a system object modeling javascript for all your projects. You can create complex models and control all its mutations. It's time to start working with Hamsa...
           </p>
         </section>
 
@@ -245,9 +245,9 @@ contact.destroy();
           <pre class="active"><code class="coffeescript">
 callback = (state) -> console.log "#{state.object.username}.observe", state
 
-contact.observe callback, MUTATIONS = ["update", "delete"]</code></pre>
+contact.observe callback, ["add", "update"]</code></pre>
           <pre><code class="javascript">
-var MUTATIONS = ["update", "delete"];
+var MUTATIONS = ["add", "update"];
 var callback = function(state) {
   return console.log(state.object.username + ".observe", state);
 };
@@ -265,7 +265,6 @@ javi = new Contact username: "@soyjavi", callback, ["add", "update"]</code></pre
           <pre><code class="javascript">
 var javi = new Contact({username: "@soyjavi"}, callback, ["add", "update"]);</code></pre>
 
-
           <p>
             Now also if you modify or create (remember you only observe mutations <code>"add"</code> and <code>"update"</code>) any of the fields of your instance we shall have a reference of that change in your console:
           </p>
@@ -276,27 +275,111 @@ var javi = new Contact({username: "@soyjavi"}, callback, ["add", "update"]);</co
 javi.username = "@javi"
 ###
 > @javi.observe {
-  type  : "update",
-  object: Object,
+  type    : "update"
+  name    : "username"
+  oldValue: "@soyjavi"
+  object  : Object
   ...}
+###
+
+javi.mail = "hi@soyjavi.com"
+###
+> @javi.observe {
+  type    : "add"
+  name    : "mail"
+  object  : Object }
 ###</code></pre>
           <pre><code class="javascript">
 javi.username = "@javi";
 /*
 > @javi.observe {
-  type  : "update",
-  object: Object,
+  type    : "update",
+  name    : "username",
+  oldValue: "@soyjavi",
+  object  : Object,
   ...}
+*/
+
+javi.mail = "hi@soyjavi.com";
+/*
+> @javi.observe {
+  type    : "add",
+  name    : "mail",
+  object  : Object }
 */</code></pre>
 
           <p>
-
+            In our Hamsa Class we set that we want to know if any of the instances are removed (using the key <code>"delete"</code>). Well, now you will use the class method <code>destroyAll</code> to remove all instances and see on your console each element destroyed:
           </p>
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
             <button data-language="javascript">.js</button></nav>
-          <pre class="active"><code class="coffeescript"></code></pre>
-          <pre><code class="javascript"></code></pre>
+          <pre class="active"><code class="coffeescript">
+do Contact.destroyAll
+
+###
+> Contact.observe {type: "delete"...}
+> Contact.observe {type: "delete"...}
+###</code></pre>
+          <pre><code class="javascript">
+Contact.destroyAll()
+
+/*
+> Contact.observe {type: "delete"...}
+> Contact.observe {type: "delete"...}
+*/</code></pre>
+        </section>
+
+        <section id="select" class="row">
+          <h6><span class="color theme">SELECT</span> YOUR hamsa INSTANCES</h6>
+          <p>
+          Finally you will learn how to select instances of a particular Hamsa Class. To do this we will use the class method <code>find</code> which receives a filtering function and returns an array of instances that fulfill that function.
+          </p>
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+Contact.find (instance) ->
+  if instance.since < 2014 and instance.username is "@javi"
+
+###
+> [ {username: "@javi", ...} ]
+###</code></pre>
+          <pre><code class="javascript">
+Contact.find(function(instance) {
+  if (instance.since < 2014 && instance.username === "@javi") {
+    return instance;
+  }
+});
+
+/*
+> [ {username: "@javi", ...} ]
+*/</code></pre>
+
+          <p>
+            In case you want to filter for a particular field you can use the method of <code>findBy</code> class. Unlike with the <code>find</code> method in this case you must set two parameters, the first is the field you want to filter and the second one the exact search value.
+          </p>
+          <nav>
+            <button data-language="coffeescript" class="active">.coffee</button>
+            <button data-language="javascript">.js</button></nav>
+          <pre class="active"><code class="coffeescript">
+Contact.findBy "username", "@javi"
+
+###
+> [{username: "@javi", ...}]
+###</code></pre>
+          <pre><code class="javascript">
+Contact.findBy("username", "@javi");
+
+/*
+> [{username: "@javi", ...}]
+*/</code></pre>
+        </section>
+
+        <section data-flex="horizontal center wrap">
+          <a href="https://github.com/soyjavi/hamsa/archive/0.3.22.zip" class="button">Download</a>
+          <a href="https://github.com/soyjavi/hamsa" class="button">Github</a>
+          <button disabled>bower install <strong>hamsa</strong></button>
         </section>
 
       </div>

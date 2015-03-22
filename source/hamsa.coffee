@@ -43,15 +43,6 @@ class window.Hamsa
   @all: -> do @find
 
   ###
-  Returns instances of the defined Hamsa Class
-  @method find
-  @param  {function}  [OPTIONAL] Function for filter instances
-  @return {array}     Array of Hamsa instances
-  ###
-  @find: (filter) ->
-    (record for uid, record of @records when not filter or filter record)
-
-  ###
   Destroy all instances of the Class
   @method destroyAll
   @return {array}     Empty array of all repository instances.
@@ -61,6 +52,15 @@ class window.Hamsa
     @records
 
   ###
+  Returns instances of the defined Hamsa Class
+  @method find
+  @param  {function}  [OPTIONAL] Function for filter instances
+  @return {array}     Array of Hamsa instances
+  ###
+  @find: (filter) ->
+    (record for uid, record of @records when not filter or filter record)
+
+  ###
   Finds a determinate instance with a field attribute.
   @method findBy
   @param  {string}    Name of field to search.
@@ -68,7 +68,7 @@ class window.Hamsa
   @return {object}    Hamsa instance.
   ###
   @findBy: (name, value) ->
-    record for uid, record of @records when record[name] is value
+    (record for uid, record of @records when record[name] is value)
 
   ###
   Observe changes in instance repository.
