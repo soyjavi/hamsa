@@ -25,6 +25,7 @@ body
   text-transform              : uppercase
   letter-spacing              : .1rem
   border-radius               : BORDER_RADIUS
+  margin                      : 0 (U / 10)
   &:not([disabled])
     color                     : COLOR = alpha(THEME, 100%)
     border                    : 1px solid alpha(THEME, 25%)
@@ -33,6 +34,12 @@ body
       color                   : WHITE
       background-color        : THEME
       border-color            : THEME
+  &[disabled]
+    font-family               : monospace, "Courier New", Courier
+    text-transform            : lowercase
+    font-size                 : (U / 1.5)
+    font-weight               : bold
+    vertical-align            : top
 
 // -- FORM ---------------------------------------------------------------------
 input[type="email"], input[type="search"], input[type="text"], input[type="tel"],
