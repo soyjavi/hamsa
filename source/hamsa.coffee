@@ -107,7 +107,7 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
         if typeof @[field] is 'function'
           @[field] attributes[field] or define.default
         else
-          @[field] = attributes[field] or define.default
+          @[field] = _cast attributes[field], define
       @observe handler, events if handler?
       @
 
@@ -155,3 +155,8 @@ _guid = ->
     v.toString 16
   .toUpperCase()
 
+_cast = (value, define) ->
+  if define.type isnt Date
+    define.type value or define.default
+  else
+    value or define.type define.default
