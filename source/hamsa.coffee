@@ -79,8 +79,14 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     @return {object}    A object observe state.
     ###
     @observe: (handler, events = DEFAULT_EVENTS) ->
-      @observer = Object.observe @records, (states) ->
-        handler state for state in states
+      @observer = Object.observe @records, (states) =>
+        for state in states
+          event = type: state.type, name: state.name
+          if state.type in ["add", "update"]
+            event.object = @records[state.name]
+          else
+            event.oldValue = state.oldValue
+          handler event
       , events
 
     ###

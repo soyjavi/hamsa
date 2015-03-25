@@ -1,4 +1,4 @@
-console.log "\n--"
+console.log "\n"
 
 # -- Test
 
@@ -9,6 +9,7 @@ class window.Contact extends Hamsa
     mail            : type: String
     username        : type: String
     avatar          : type: String, default: "http://gravatar.org"
+    name            : type: String
     networks        : type: Object
     since           : type: Number, default: 2014
     created_at      : type: Date, default: new Date()
@@ -16,28 +17,41 @@ class window.Contact extends Hamsa
   @fullname: ->
     console.log "???fullname"
 
-Contact.observe (state) -> console.log "Contact.observe", state
+Contact.observe (state) ->
+  console.log "\nContact.observe #{state.type} [#{state.name}]", state
 
-observe = (state) -> console.log "#{state.object.username}.observe", state.type, state
+observe = (state) ->
+  console.log " - #{state.object.username}.observe #{state.type} [#{state.name}]", state
 
 # -- Inline definition
 javi = new Contact
-  username: "Javi", twitter: "@soyjavi", mail: "javi@tapquo.com"
+  username: "Javi", twitter: "@soyjavi", mail: "javi@tapquo.com", since: "1980"
   , observe
   , ["add", "update", "delete"]
-# -- 2-steps definition
-cata = new Contact
-  username: "Cata", twitter: "@cataflu", networks: facebook: false
-cata.observe observe, ["update"]
-# -- No data
-new Contact()
 
-# # Actions
+# -- 2-steps definition
+date = javi.created_at
+cata = new Contact
+  username: "Cata", twitter: "@cataflu", created_at: date, networks: facebook: false
+cata.observe observe, ["update"]
+
+# setTimeout =>
+#   new Contact()
+# , 2000
+
+# # -- No data
+# new Contact()
+
+# Actions
 javi.name = "Javier"
 javi.since = 1980
 javi.networks = twitter: "@soyjavi"
 javi.fullname = "Francisco Javier"
 delete javi.networks
+
+setTimeout =>
+  javi.destroy()
+, 2000
 
 cata.username = "cataflu"
 cata.facebook = undefined
