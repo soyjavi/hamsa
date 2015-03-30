@@ -15,17 +15,11 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
   class Hamsa
 
     # -- STATIC ------------------------------------------------------------------
-    ###
-    Instance repository
-    ###
-    @records  = {}
-    @fields   = {}
-    @names    = []
-
-    ###
-    Observer reference
-    ###
-    @observer = undefined
+    @records    = {}
+    @fields     = {}
+    @names      = []
+    @callbacks  = []
+    @observers  = []
 
     ###
     Set a array of fields used in the Class
@@ -78,16 +72,18 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     @param  {function}  A function to execute each time the object is changed.
     @return {object}    A object observe state.
     ###
-    @observe: (handler, events = DEFAULT_EVENTS) ->
-      @observer = Object.observe @records, (states) =>
+    @observe: (callback, events = DEFAULT_EVENTS) ->
+      observer = Object.observe @records, (states) =>
         for state in states
           event = type: state.type, name: state.name
           if state.type in ["add", "update"]
             event.object = @records[state.name]
           else
             event.oldValue = state.oldValue
-          handler event
+          callback event
       , events
+      @callbacks.push callback
+      @observers.push observer
 
     ###
     Unobserve changes in instance repository.
@@ -95,8 +91,9 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     @return {object}    A object observe state.
     ###
     @unobserve: ->
-      Object.unobserve @records, @observer
-
+      Object.unobserve @records, observer for observer in @observers
+      @callbacks = []
+      @observers = []
 
     # -- INSTANCE ----------------------------------------------------------------
     ###
@@ -106,15 +103,18 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     @param  {function}  A function to execute each time the fields change.
     @return {object}    Hamsa instance.
     ###
-    constructor: (attributes = {}, handler, events = DEFAULT_EVENTS) ->
+    constructor: (fields = {}, callback, events = DEFAULT_EVENTS) ->
       @constructor.className = @constructor.name
       @constructor.records[@uid = _guid()] = @
-      for field, define of @constructor.fields when attributes[field] or define.default?
+      for field, define of @constructor.fields when fields[field] or define.default?
         if typeof @[field] is 'function'
-          @[field] attributes[field] or define.default
+          @[field] fields[field] or define.default
         else
-          @[field] = _cast attributes[field], define
-      @observe handler, events if handler?
+          @[field] = _cast fields[field], define
+
+      @callbacks = []
+      @observers = []
+      @observe callback, events if callback?
       @
 
     ###
@@ -123,26 +123,44 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     @param  {function}  A function to execute each time the fields change.
     @return {object}    A object observe state.
     ###
-    observe: (handler, events = DEFAULT_EVENTS) ->
-      @observer = Object.observe @, (states) =>
+    observe: (callback, events = DEFAULT_EVENTS) ->
+      observer = Object.observe @, (states) =>
         for state in states when state.name in @constructor.names
           delete state.object.observer
-          handler state
+          callback state
       , events
+      @callbacks.push callback
+      @observers.push observer
+      observer
 
     ###
     Unobserve changes in a determinate Hamsa instance.
     @method unobserve
     @return {object}    A object observe state.
     ###
-    unobserve: -> Object.unobserve @fields, @observer
+    unobserve: ->
+      Object.unobserve @, observer for observer in @observers
+      @callbacks = []
+      @observers = []
 
     ###
     Destroy current Hamsa instance
     @method destroy
     @return {object}    Current Hamsa instance
     ###
-    destroy: -> delete @constructor.records[@uid]
+    destroy: (trigger = true) ->
+      if trigger
+        for callback in @callbacks
+          callback
+            type    : "destroy"
+            name    : @uid
+            oldValue: @fields()
+      delete @constructor.records[@uid]
+
+    fields: ->
+      value = {}
+      value[name] = @[name] for name in @constructor.names
+      value
 
   if typeof define is "function" and define.amd
     define -> Hamsa
