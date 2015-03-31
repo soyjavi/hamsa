@@ -1,6 +1,6 @@
 {
     "name": "hamsa-site",
-    "version": "0.3.25",
+    "version": "0.3.31",
     "directory": "dependencies/bower",
     "componentsDirectory": "dependencies/bower",
     "ignore": [

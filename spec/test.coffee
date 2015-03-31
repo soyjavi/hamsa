@@ -21,7 +21,33 @@ Contact.observe (state) ->
   console.log "\nContact.observe #{state.type} [#{state.name}]", state
 
 observe = (state) ->
-  console.log " - #{state.object.username}.observe #{state.type} [#{state.name}]", state
+  object = state.object or state.oldValue
+  console.log " - #{object.username}.observe #{state.type} [#{state.name}]", state
+
+javi = new Contact
+  username: "Javi", twitter: "@soyjavi", mail: "javi@tapquo.com", since: "1980"
+  , observe
+  , ["add", "update", "delete"]
+
+
+cata = new Contact username: "cata", observe
+cata.observe (state) ->
+  console.log "   -----> 2/3 <-----", state
+cata.observe (state) ->
+  console.log "    -----> 3/3 <-----", state
+
+
+# for index in [1..10]
+#   new Contact username: "user nº#{index}"
+
+setTimeout =>
+  javi.username += "+"
+  cata.username += "+"
+  javi.destroy()
+  cata.destroy()
+, 100
+
+return true
 
 # -- Inline definition
 javi = new Contact

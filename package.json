@@ -1,7 +1,7 @@
 {
   "name": "hamsa",
-  "version": "0.3.25",
-  "description": "Object.Observe wrapper.",
+  "version": "0.3.31",
+  "description": "A dead simple, data-binding & observable model.",
   "homepage": "http://gethamsa.com",
   "author": {
     "name": "Javi Jimenez Villar (@soyjavi)",
