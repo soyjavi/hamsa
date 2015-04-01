@@ -104,4 +104,3 @@ gulp.task "default", ->
   # gh-pages
   gulp.watch path.page.styl, ["stylus"]
   gulp.watch path.page.coffee, ["coffee"]
-
