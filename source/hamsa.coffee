@@ -72,7 +72,7 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     @param  {function}  A function to execute each time the object is changed.
     @return {object}    A object observe state.
     ###
-    @observe: (callback, events = DEFAULT_EVENTS) ->
+    @observe: (callback, @events = DEFAULT_EVENTS) ->
       observer = Object.observe @records, (states) =>
         for state in states
           event = type: state.type, name: state.name
@@ -81,7 +81,7 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
           else
             event.oldValue = state.oldValue
           callback event
-      , events
+      , @events
       @callbacks.push callback
       @observers.push observer
 
@@ -127,6 +127,8 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
       observer = Object.observe @, (states) =>
         for state in states when state.name in @constructor.names
           delete state.object.observer
+          for fn in @constructor.callbacks when state.type is "update" and state.type in @constructor.events
+            fn state
           callback state
       , events
       @callbacks.push callback
