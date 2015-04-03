@@ -29,7 +29,6 @@ javi = new Contact
   , observe
   , ["add", "update", "delete"]
 
-
 cata = new Contact username: "cata", observe
 cata.observe (state) ->
   console.log "   -----> 2/3 <-----", state

@@ -114,7 +114,13 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
 
       @callbacks = []
       @observers = []
-      @observe callback, events if callback?
+      if callback?
+        @observe callback, events
+      else if not callback and "update" in @constructor.events
+        Object.observe @, (states) =>
+          for state in states when state.name in @constructor.names
+            _constructorUpdate state, @constructor
+        , ["update"]
       @
 
     ###
@@ -127,8 +133,7 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
       observer = Object.observe @, (states) =>
         for state in states when state.name in @constructor.names
           delete state.object.observer
-          for fn in @constructor.callbacks when state.type is "update" and state.type in @constructor.events
-            fn state
+          _constructorUpdate state, @constructor
           callback state
       , events
       @callbacks.push callback
@@ -186,3 +191,8 @@ _cast = (value, define) ->
     define.type value or define.default
   else
     value or define.type define.default
+
+_constructorUpdate = (state, className) ->
+  for callback in className.callbacks when state.type is "update" and state.type in className.events
+    delete state.object.observer
+    callback state
