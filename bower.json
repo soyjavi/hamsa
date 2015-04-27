@@ -1,19 +1,19 @@
 {
-    "name": "hamsa-site",
-    "version": "0.4.4",
-    "directory": "dependencies/bower",
-    "componentsDirectory": "dependencies/bower",
-    "ignore": [
-            "**/.*",
-            "node_modules",
-            "bower_components",
-            "test",
-            "tests"
-    ],
-    "main": "hamsa.js",
-    "dependencies": {
-        "flexo"            : "*",
-        "jquery"           : "*",
-        "stylmethods"      : "*"
-    }
+  "name"            : "hamsa",
+  "version"         : "0.4.26",
+  "description"     : "A dead simple, data-binding & observable model.",
+  "keywords"        : ["object", "observe", "data-binding", "model"],
+  "homepage"        : "http://gethamsa.com",
+  "author"          : {
+    "name"          : "Javi Jimenez Villar",
+    "mail"          : "javi.jimenez.villar@gmail.com",
+    "twitter"       : "@soyjavi",
+    "site"          : "http://soyjavi.com" },
+  "license"         : "MIT",
+  "main"            : "hamsa.js",
+  "ignore"          : [ "build", "node_modules"],
+  "dependencies"    : {
+      "flexo"       : "*",
+      "jquery"      : "*",
+      "stylmethods" : "*"}
 }

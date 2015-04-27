@@ -1,19 +1,17 @@
 {
-  "name": "hamsa",
-  "version": "0.4.4",
-  "description": "A dead simple, data-binding & observable model.",
-  "homepage": "http://gethamsa.com",
-  "author": {
-    "name": "Javi Jimenez Villar (@soyjavi)",
-    "site": "http://soyjavi.com"
-  },
-  "main": ["hamsa.js"],
-  "keywords": [ "mobile" ],
-  "license": "MIT",
-  "dependencies": {
-    "coffee-script": "^1.8.0"
-  },
-  "devDependencies": {
+  "name"                        : "hamsa",
+  "version"                     : "0.4.26",
+  "description"                 : "A dead simple, data-binding & observable model.",
+  "homepage"                    : "http://gethamsa.com",
+  "author"                      : {
+    "name"                      : "Javi Jimenez Villar",
+    "mail"                      : "javi.jimenez.villar@gmail.com",
+    "twitter"                   : "@soyjavi",
+    "site"                      : "http://soyjavi.com" },
+  "license"                     : "MIT",
+  "dependencies"                : {
+    "coffee-script"               : "^1.8.0" },
+  "devDependencies"             : {
     "gulp"                      : "^3.8.8",
     "gulp-coffee"               : "*",
     "gulp-concat"               : "*",
