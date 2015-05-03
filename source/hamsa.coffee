@@ -20,6 +20,7 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     @names      = []
     @callbacks  = []
     @observers  = []
+    @events     = []
 
     ###
     Set a array of fields used in the Class
@@ -116,7 +117,7 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
       @observers = []
       if callback?
         @observe callback, events
-      else if not callback and "update" in @constructor.events
+      else if not callback and "update" in @constructor?.events
         Object.observe @, (states) =>
           for state in states when state.name in @constructor.names
             _constructorUpdate state, @constructor
