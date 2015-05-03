@@ -1,6 +1,6 @@
 {
   "name"            : "hamsa",
-  "version"         : "0.4.26",
+  "version"         : "0.5.3",
   "description"     : "A dead simple, data-binding & observable model.",
   "keywords"        : ["object", "observe", "data-binding", "model"],
   "homepage"        : "http://gethamsa.com",
