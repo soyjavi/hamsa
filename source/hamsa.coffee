@@ -188,8 +188,10 @@ _guid = ->
   .toUpperCase()
 
 _cast = (value, define) ->
-  if define.type isnt Date
+  if define.type isnt Date and define.type isnt Array
     define.type value or define.default
+  else if define.type is Array
+    value or define.default
   else
     value or define.type define.default
 

@@ -12,6 +12,7 @@ class window.Contact extends Hamsa
     name            : type: String
     networks        : type: Object
     since           : type: Number, default: 2014
+    followers       : type: Array, default: ["zetapath"]
     created_at      : type: Date, default: new Date()
 
   @fullname: ->
