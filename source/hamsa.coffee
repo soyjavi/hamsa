@@ -75,7 +75,7 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     ###
     @observe: (callback, @events = DEFAULT_EVENTS) ->
       observer = Object.observe @records, (states) =>
-        for state in states
+        for state in states when @records[state.name].constructor is @
           event = type: state.type, name: state.name
           if state.type in ["add", "update"]
             event.object = @records[state.name]
