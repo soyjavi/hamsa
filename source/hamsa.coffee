@@ -14,13 +14,13 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
 
   class Hamsa
 
-    # -- STATIC ------------------------------------------------------------------
-    @records    = {}
+    # -- STATIC ----------------------------------------------------------------
+    @callbacks  = []
+    @events     = []
     @fields     = {}
     @names      = []
-    @callbacks  = []
     @observers  = []
-    @events     = []
+    @records    = {}
 
     ###
     Set a array of fields used in the Class
@@ -96,7 +96,7 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
       @callbacks = []
       @observers = []
 
-    # -- INSTANCE ----------------------------------------------------------------
+    # -- INSTANCE --------------------------------------------------------------
     ###
     Create a nre instance for a Hamsa Class.
     @method constructor
@@ -119,8 +119,9 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
         @observe callback, events
       else if not callback and "update" in @constructor?.events
         Object.observe @, (states) =>
-          for state in states when state.name in @constructor.names
-            _constructorUpdate state, @constructor
+          for state in states when state.object.constructor is @constructor
+            if state.name in @constructor.names
+              _constructorUpdate state, @constructor
         , ["update"]
       @
 
@@ -196,6 +197,7 @@ _cast = (value, define) ->
     value or define.type define.default
 
 _constructorUpdate = (state, className) ->
-  for callback in className.callbacks when state.type is "update" and state.type in className.events
-    delete state.object.observer
-    callback state
+  for callback in className.callbacks
+    if state.type is "update" and state.type in className.events
+      delete state.object.observer
+      callback state
