@@ -15,21 +15,17 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
   class Hamsa
 
     # -- STATIC ----------------------------------------------------------------
-    @callbacks  = []
-    @events     = []
-    @fields     = {}
-    @names      = []
-    @observers  = []
-    @records    = {}
-
     ###
     Set a array of fields used in the Class
     @method fields
     @param  {string}    Unknown arguments, each argument is the name of field.
     ###
     @define: (@fields = {}) ->
-      @records = {}
-      @names = (field for field of @fields)
+      @callbacks  = []
+      @events     = []
+      @names      = (field for field of @fields)
+      @observers  = []
+      @records    = {}
       @
 
     ###
