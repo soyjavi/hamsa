@@ -45,10 +45,10 @@
         <section id="intro" class="row">
           <h6>IS <span class="color theme">hamsa</span> FOR YOU?</h6>
           <p>
-            A revolution is coming. There’s a new addition to JavaScript that’s going to change everything you think you know about data-binding. It’s also going to change how many of your MVC libraries approach observing models for edits and updates. Are you ready for some sweet performance boosts to apps that care about property observation? <span class="color white">Object.observe()</span>, part of a future ECMAScript standard, is a method for asynchronously observing changes to JavaScript objects...without the need for a separate library. It allows an observer to receive a time-ordered sequence of change records which describe the set of changes which took place to a set of observed objects.
+            A revolution is coming. There’s a new addition to JavaScript that’s going to change everything you think you know about data-binding. It’s also going to change how many of your MVC libraries approach observing models for edits and updates. Are you ready for some sweet performance boosts to apps that care about property observation? <span class="color white">Object.observe()</span>, part of a future ECMAScript standard, is a method for asynchronously observing changes in JavaScript objects...without the need for a separate library. It allows an observer to receive a time-ordered sequence of change records which describe the set of changes which took place to a set of observed objects.
           </p>
           <p>
-            Hamsa will help you use this new specification today. No need to worry if your browser supports <code>Object.Observe()</code> because Hamsa comes with polyfill perfect for those older browsers. Anyway, it is much more than a polyfill the main objective is to provide you a system object modeling javascript for all your projects. You can create complex models and control all its mutations. It's time to start working with Hamsa...
+            Hamsa will help you use this new specification today. No need to worry if your browser supports <code>Object.Observe()</code> because Hamsa comes with a polyfill perfect for those older browsers. Anyway, it is much more than a polyfill. The main objective is to provide you with an object modeling javascript system for all your projects. You can create complex models and control all its mutations. It's time to start working with Hamsa...
           </p>
         </section>
 
@@ -65,7 +65,7 @@ bower install hamsa</code></pre>
           </p>
 
           <p>
-            The bare minimum for using hamsa on a web page is linking to the library:
+            The minimal setup to use Hamsa on a web page is linking to the library:
           </p>
 
           <pre class="active"><code class="javascript">
@@ -79,7 +79,7 @@ bower install hamsa</code></pre>
 npm install hamsa</code></pre>
 
           <p>
-            If you want use hamsa in your NodeJS project you only need <code>require</code> the library after install via NPM:
+            If you want to use Hamsa in your NodeJS project you only need to <code>require</code> the library after installing it via NPM:
           </p>
 
           <nav>
@@ -96,7 +96,7 @@ var Hamsa = require("Hamsa")</code></pre>
         <section id="define" class="row">
           <h6><span class="color theme">DEFINE</span> YOUR FIRST hamsa CLASS</h6>
           <p>
-            Usually you find MVC frameworks where the model becomes complex and heavy. With Hamsa wont have that feeling, the model does exactly what you need without becoming complex conventions, simple but powerfull, let's see how to create one:
+            Usually you find MVC frameworks where the model becomes complex and heavy over time. With Hamsa you won't have that feeling: the model does exactly what you need it to do without adhering to complex conventions. It is simple but powerful, let's see how to create one:
           </p>
 
           <nav>
@@ -135,7 +135,7 @@ var Contact = (function(_super) {
 
 })(Hamsa);</code></pre>
           <p>
-            As you can see you have to use the inherited function <code>@define</code> for setting fields will have your model. Must indicate the type of security you need and if you can set a default value. Easy, right? Ipsum.
+            As you can see you have to use the inherited function <code>@define</code> for setting the fields you will have in your model. You must indicate the type of security you need and, if you can, set a default value. Easy, right?
           </p>
         </section>
 
@@ -143,7 +143,7 @@ var Contact = (function(_super) {
         <section id="instances" class="row">
           <h6>CREATING hamsa <span class="color theme">INSTANCES</span></h6>
           <p>
-            Once you have defined your first Hamsa class you can start creating new instances of it. As you'll be able to check is really easy:
+            Once you have defined your first Hamsa Class you can start creating new instances of it. As you'll be able to see it is really easy:
           </p>
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
@@ -195,7 +195,7 @@ var contact = new Contact({username: "@soyjavi", since: 1980});
 }
 */</code></pre>
           <p>
-            If you want to delete a particular instance you only have to use the <code>destroy</code> method and hamsa do the rest. In the next chapter we will learn to observe the mutations both instances and class.
+            If you want to delete a particular instance you only have to use the <code>destroy</code> method and hamsa does the rest. In the next chapter we will learn to observe the mutations of both instances and classes.
           </p>
           <nav>
               <button data-language="coffeescript" class="active">.coffee</button>
@@ -214,7 +214,7 @@ contact.destroy;
         <section id="observe" class="row">
           <h6><span class="color theme">OBSERVE</span> YOUR hamsa CHANGES</h6>
           <p>
-            Now that you know how to create your own Hamsa classes and how to create instances of these. Now you should know as you can see both mutations Hamsa class and its instances. We will begin to observe, <code>Contact</code>, the Hamsa class you have defined in our case. You only have to define a function for collect mutations and also set the mutations we want observe:
+            Now that you know how to create your own Hamsa Classes and how to create instances of these, you should find out how you can see both mutations to Hamsa Classes and instances. We will begin to observe <code>Contact</code>, the Hamsa Class you have defined in our case. You only have to define a function to collect mutations and also set the mutations we want observe:
           </p>
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
@@ -230,7 +230,7 @@ Contact.observe(function(state) {
   return console.log("Contact.observe", state);
 }, MUTATIONS);</code></pre>
           <p>
-            To start observing a Hamsa Class just have to have to use the <code>observe</code> method. The first parameter is the callback function and the second one is an array of mutations that you want to observe. Now, you can create instances of your hamsa Class and see how each new instance (if you have subscribed to the <code>"new"</code> mutation) have a message on your console.
+            To start observing a Hamsa Class you just have to use the <code>observe</code> method. The first parameter is the callback function and the second one is an array of mutations that you want to observe. Now, you can create instances of your Hamsa Class and see how each new instance (if you have subscribed to the <code>"new"</code> mutation) leave a message on your console.
           </p>
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
@@ -253,7 +253,7 @@ var contact = new Contact();
 */</code></pre>
 
           <p>
-            If you have subscribed to the mutation <code>"delete"</code> you can delete any of your instances and watch as the observer reported on your console change.
+            If you have subscribed to the mutation <code>"delete"</code> you can delete any of your instances and watch as the observer reports on these deletions through your console.
           </p>
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
@@ -276,7 +276,7 @@ contact.destroy();
 */</code></pre>
 
           <p>
-            As has been shown is easy to observe the mutations of Hamsa class. Now you will learn to manage mutations in a particular instance, for it can do in two ways. The first is the same as the class using the <code>observe</code> method:
+            As has been shown it is easy to observe the mutations of the Hamsa Class. Now you will learn to manage mutations in a particular instance: This can be achieved in two ways. The first is the same as the class using the <code>observe</code> method:
           </p>
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
@@ -305,7 +305,7 @@ javi = new Contact username: "@soyjavi", callback, ["add", "update"]</code></pre
 var javi = new Contact({username: "@soyjavi"}, callback, ["add", "update"]);</code></pre>
 
           <p>
-            Now also if you modify or create (remember you only observe mutations <code>"add"</code> and <code>"update"</code>) any of the fields of your instance we shall have a reference of that change in your console:
+            Now also if you modify or create (remember you only observe mutations <code>"add"</code> and <code>"update"</code>) any of the fields of your instance, we shall see a reference to that change in your console:
           </p>
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
@@ -348,7 +348,7 @@ javi.mail = "hi@soyjavi.com";
 */</code></pre>
 
           <p>
-            In our Hamsa Class we set that we want to know if any of the instances are removed (using the key <code>"delete"</code>). Well, now you will use the class method <code>destroyAll</code> to remove all instances and see on your console each element destroyed:
+            In our Hamsa Class definition before, we said that we want to know if any of the instances are destroyed (using the key <code>"delete"</code>). Well, now you will use the class method <code>destroyAll</code> to remove all instances and see the deletion of the same logged to your console:
           </p>
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
@@ -396,7 +396,7 @@ Contact.find(function(instance) {
 */</code></pre>
 
           <p>
-            In case you want to filter for a particular field you can use the method of <code>findBy</code> class. Unlike with the <code>find</code> method in this case you must set two parameters, the first is the field you want to filter and the second one the exact search value.
+            In case you want to filter for a particular field you can use the class method <code>findBy</code>. Unlike with the <code>find</code> method in this case you must set two parameters, the first is the field you want to filter and the second one the exact search value.
           </p>
           <nav>
             <button data-language="coffeescript" class="active">.coffee</button>
