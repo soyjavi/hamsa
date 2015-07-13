@@ -54,14 +54,24 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
       (record for uid, record of @records when not filter or filter record)
 
     ###
-    Finds a determinate instance with a field attribute.
+    Finds a determinate group of instances with a field attribute.
     @method findBy
+    @param  {string}    Name of field to search.
+    @param  {string}    Value to filter search.
+    @return {object}    Array of Hamsa instances.
+    ###
+    @findBy: (name, value) ->
+      (record for uid, record of @records when record[name] is value)
+
+    ###
+    Finds a determinate instance with a field attribute.
+    @method findOne
     @param  {string}    Name of field to search.
     @param  {string}    Value to filter search.
     @return {object}    Hamsa instance.
     ###
-    @findBy: (name, value) ->
-      (record for uid, record of @records when record[name] is value)
+    @findOne: (name, value) ->
+      @findBy(name, value)[0]
 
     ###
     Observe changes in instance repository.
