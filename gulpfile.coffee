@@ -15,7 +15,7 @@ pkg     = require "./package.json"
 
 # -- FILES ---------------------------------------------------------------------
 path =
-  bower : "./dist"
+  dist  : "./dist"
   build : "./build"
   source: "source/*.coffee"
   spec  : "spec/hamsa.coffee"
@@ -52,7 +52,9 @@ gulp.task "source", ->
     .pipe gulp.dest path.build
     .pipe uglify mangle: true
     .pipe header banner, pkg: pkg
-    .pipe gulp.dest path.bower
+    .pipe gulp.dest path.dist
+    .pipe concat "index.js"
+    .pipe gulp.dest path.dist
 
 gulp.task "spec", ->
   gulp.src path.spec

@@ -1,6 +1,6 @@
 {
   "name"                        : "hamsa",
-  "version"                     : "0.7.14",
+  "version"                     : "0.8.1",
   "description"                 : "A dead simple, data-binding & observable model.",
   "homepage"                    : "http://gethamsa.com",
   "author"                      : {
@@ -9,11 +9,7 @@
     "twitter"                   : "@soyjavi",
     "site"                      : "http://soyjavi.com" },
   "license"                     : "MIT",
-  "files": [
-    "hamsa.js",
-    "dist/"
-  ],
-  "main": "hamsa.js",
+  "main"                        : "./dist",
   "dependencies"                : {
     "coffee-script"               : "^1.8.0" },
   "devDependencies"             : {
@@ -28,6 +24,5 @@
     "gulp-util"                 : "*",
     "karma"                     : "*",
     "karma-jasmine"             : "*",
-    "karma-phantomjs-launcher"  : "*"
-  }
+    "karma-phantomjs-launcher"  : "*" }
 }
