@@ -74,6 +74,20 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
       @findBy(name, value)[0]
 
     ###
+    Finds a determinate instance with a field attribute.
+    @method createOrUpdate
+    @param  {string}    Name of field to compare.
+    @return {object}    Data for create/update the instance.
+    ###
+    @createOrUpdate: (field, data) ->
+      instance = @findOne field, data[field]
+      if instance
+        instance[key] = value for key, value of data
+      else
+        instance = new @ data
+      instance
+
+    ###
     Observe changes in instance repository.
     @method observe
     @param  {function}  A function to execute each time the object is changed.
