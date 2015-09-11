@@ -47,55 +47,39 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     ###
     Returns instances of the defined Hamsa Class
     @method find
-    @param  {function}  [OPTIONAL] Function for filter instances
-    @return {array}     Array of Hamsa instances
+    @param  {object}  [OPTIONAL] Specifies selection criteria using query operators.
+                      To return all instances, omit this parameter.
+    @return {array}   Array of Hamsa instances
     ###
-    @find: (filter) ->
-      (record for uid, record of @records when not filter or filter record)
+    @find: (query = {}) ->
+      records = []
+      for uid, record of @records
+        exists = true
+        for field, value of query when exists
+          exists = false if _cast(record[field], @fields[field]) isnt value
+        records.push record if exists
+      records
 
     ###
-    Finds a determinate group of instances with a field attribute.
-    @method findBy
-    @param  {string}    Name of field to search.
-    @param  {string}    Value to filter search.
-    @return {object}    Array of Hamsa instances.
-    ###
-    @findBy: (name, value) ->
-      (record for uid, record of @records when record[name] is value)
-
-    ###
-    Finds a determinate instance with a field attribute.
+    Returns one instance that satisfies the specified query criteria
     @method findOne
-    @param  {string}    Name of field to search.
-    @param  {string}    Value to filter search.
-    @return {object}    Hamsa instance.
+    @param  {object}  [OPTIONAL] Specifies selection criteria using query operators.
+                      To return the first instance, omit this parameter.
+    @return {object}  Hamsa instance.
     ###
-    @findOne: (name, value) ->
-      @findBy(name, value)[0]
+    @findOne: (query) ->
+      @find(query)[0]
 
     ###
     Modifies and returns a single instance
     @method findAndModify
-    @param  {document}  Document parameter with the embedded document fields.
-    @return {object}    Array of Hamsa instance.
+    @param  {object}  Document parameter with the embedded document fields.
+    @return {object}  Hamsa instance.
     ###
     @findAndModify: (document) ->
-      document.upsert   = document.upsert or false
-      document.changed  = false
-      filter = (record) =>
-        exists = not document.changed
-        for field, value of document.query when exists
-          exists = false if _cast(record[field], @fields[field]) isnt value
-        if exists
-          record[key]       = value for key, value of document.update
-          document.changed  = true
-        else if not exists and document.upsert
-          new @ document.update
-          document.upsert   = false
-          document.changed  = true
-          exists            = true
-        exists
-      @find(filter)[0]
+      record = @findOne document.query
+      record[key] = value for key, value of document.update if record
+      record or new @ document.update
 
     ###
     Observe changes in instance repository.
