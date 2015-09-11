@@ -1,6 +1,6 @@
 {
   "name"                        : "hamsa",
-  "version"                     : "0.8.1",
+  "version"                     : "0.9.11",
   "description"                 : "A dead simple, data-binding & observable model.",
   "homepage"                    : "http://gethamsa.com",
   "author"                      : {
@@ -24,5 +24,8 @@
     "gulp-util"                 : "*",
     "karma"                     : "*",
     "karma-jasmine"             : "*",
-    "karma-phantomjs-launcher"  : "*" }
+    "karma-phantomjs-launcher"  : "*" },
+  "scripts": {
+    "start": "gulp"
+  }
 }
