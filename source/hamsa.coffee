@@ -74,18 +74,28 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
       @findBy(name, value)[0]
 
     ###
-    Finds a determinate instance with a field attribute.
-    @method createOrUpdate
-    @param  {string}    Name of field to compare.
-    @return {object}    Data for create/update the instance.
+    Modifies and returns a single instance
+    @method findAndModify
+    @param  {document}  Document parameter with the embedded document fields.
+    @return {object}    Array of Hamsa instance.
     ###
-    @createOrUpdate: (field, data) ->
-      instance = @findOne field, data[field]
-      if instance
-        instance[key] = value for key, value of data
-      else
-        instance = new @ data
-      instance
+    @findAndModify: (document) ->
+      document.upsert   = document.upsert or false
+      document.changed  = false
+      filter = (record) =>
+        exists = not document.changed
+        for field, value of document.query when exists
+          exists = false if _cast(record[field], @fields[field]) isnt value
+        if exists
+          record[key]       = value for key, value of document.update
+          document.changed  = true
+        else if not exists and document.upsert
+          new @ document.update
+          document.upsert   = false
+          document.changed  = true
+          exists            = true
+        exists
+      @find(filter)[0]
 
     ###
     Observe changes in instance repository.
