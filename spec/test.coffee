@@ -5,7 +5,7 @@ console.log "\n"
 class window.Contact extends Hamsa
 
   @define
-    id              : type: String
+    id              : type: Number
     mail            : type: String
     username        : type: String
     avatar          : type: String, default: "http://gravatar.org"
@@ -18,6 +18,37 @@ class window.Contact extends Hamsa
   @fullname: ->
     console.log "???fullname"
 
+for i in [1..5]
+  new Contact id: i, username: "user_#{i}",  name: "name_#{i}"
+
+console.log Contact.find()
+
+console.log Contact.find id: 1, username: 'user_1'
+
+
+console.log Contact.findAndModify
+  query : id: 1, name: 'name_1'
+  update: username: 'one'
+  upsert: false
+
+console.log Contact.findAndModify
+  query : id: 123, name: 'name_1'
+  update: username: 'one'
+  upsert: true
+
+console.log Contact.findAndModify
+  query : since: 2014
+  update: since: 2015
+  upsert: false
+
+console.log Contact.find()
+
+console.log 'since'
+console.log Contact.findOne since: 2015
+console.log Contact.findOne since: 2014
+
+
+return true
 Contact.observe (state) ->
   console.log "\nContact.observe #{state.type} [#{state.name}]", state
 
