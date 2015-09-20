@@ -204,7 +204,7 @@ _guid = ->
     v.toString 16
   .toUpperCase()
 
-_cast = (value, define) ->
+_cast = (value, define = type: String) ->
   if define.type isnt Date and define.type isnt Array
     define.type value or define.default
   else if define.type is Array

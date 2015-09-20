@@ -47,6 +47,10 @@ console.log 'since'
 console.log Contact.findOne since: 2015
 console.log Contact.findOne since: 2014
 
+first_uid = Contact.find()[0].uid
+console.log first_uid, Contact.findOne uid: first_uid
+
+
 
 return true
 Contact.observe (state) ->
