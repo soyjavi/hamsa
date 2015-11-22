@@ -6,9 +6,9 @@ Basic Module
 
 @author     Javier Jimenez Villar <javi.jimenez.villar@gmail.com> || @soyjavi
 ###
-"use strict"
+'use strict'
 
-DEFAULT_EVENTS = ["add", "update", "delete"]
+DEFAULT_EVENTS = ['add', 'update', 'delete']
 
 ((exports) ->
 
@@ -21,7 +21,6 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     @param  {string}    Unknown arguments, each argument is the name of field.
     ###
     @define: (@fields = {}) ->
-      @callbacks  = []
       @events     = []
       @names      = (field for field of @fields)
       @observers  = []
@@ -85,32 +84,31 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     Observe changes in instance repository.
     @method observe
     @param  {function}  A function to execute each time the object is changed.
-    @return {object}    A object observe state.
+    @return {array}     Observers availables.
     ###
     @observe: (callback, @events = DEFAULT_EVENTS) ->
-      observer = Object.observe @records, (states) =>
-        for state in states
-          constructor = @records[state.name]?.constructor or state.oldValue.constructor
-          if constructor is @
-            event = type: state.type, name: state.name
-            if state.type in ["add", "update"]
-              event.object = @records[state.name]
-            else
-              event.oldValue = state.oldValue
-            callback event
+      Object.observe @records, (states) =>
+        if _existObserver @observers, callback
+          for state in states
+            constructor = @records[state.name]?.constructor or state.oldValue.constructor
+            if constructor is @
+              event = type: state.type, name: state.name
+              if state.type in ['add', 'update']
+                event.object = @records[state.name]
+              else
+                event.oldValue = state.oldValue
+              callback event
       , @events
-      @callbacks.push callback
-      @observers.push observer
+      @observers.push callback
+      @observers
 
     ###
     Unobserve changes in instance repository.
     @method unobserve
-    @return {object}    A object observe state.
+    @return {array}    Observers availables.
     ###
-    @unobserve: ->
-      Object.unobserve @records, observer for observer in @observers
-      @callbacks = []
-      @observers = []
+    @unobserve: (callback) ->
+      @observers = _unobserve @, callback
 
     # -- INSTANCE --------------------------------------------------------------
     ###
@@ -129,44 +127,42 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
         else
           @[field] = _cast fields[field], define
 
-      @callbacks = []
       @observers = []
       if callback?
         @observe callback, events
-      else if not callback and "update" in @constructor?.events
+        @observers.push callback
+      else if not callback and 'update' in @constructor?.events
         Object.observe @, (states) =>
           for state in states when state.object.constructor is @constructor
             if state.name in @constructor.names
               _constructorUpdate state, @constructor
-        , ["update"]
+        , ['update']
       @
 
     ###
     Observe changes in a determinate Hamsa instance.
     @method observe
     @param  {function}  A function to execute each time the fields change.
-    @return {object}    A object observe state.
+    @return {array}    Observers availables for the instance.
     ###
     observe: (callback, events = DEFAULT_EVENTS) ->
-      observer = Object.observe @, (states) =>
-        for state in states when state.name in @constructor.names
-          delete state.object.observer
-          _constructorUpdate state, @constructor
-          callback state
+      Object.observe @, (states) =>
+        if _existObserver @observers, callback
+          for state in states when state.name in @constructor.names
+            delete state.object.observer
+            _constructorUpdate state, @constructor
+            callback state
       , events
-      @callbacks.push callback
-      @observers.push observer
-      observer
+      @observers.push callback
+      @observers
 
     ###
     Unobserve changes in a determinate Hamsa instance.
     @method unobserve
-    @return {object}    A object observe state.
+    @return {array}    Observers availables for the instance.
     ###
-    unobserve: ->
-      Object.unobserve @, observer for observer in @observers
-      @callbacks = []
-      @observers = []
+    unobserve: (callback) ->
+      @observers = _unobserve @, callback
 
     ###
     Destroy current Hamsa instance
@@ -175,9 +171,9 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
     ###
     destroy: (trigger = true) ->
       if trigger
-        for callback in @callbacks
+        for callback in @observers
           callback
-            type    : "destroy"
+            type    : 'destroy'
             name    : @uid
             oldValue: @fields()
       delete @constructor.records[@uid]
@@ -187,7 +183,7 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
       value[name] = @[name] for name in @constructor.names
       value
 
-  if typeof define is "function" and define.amd
+  if typeof define is 'function' and define.amd
     define -> Hamsa
   else
     exports.Hamsa = Hamsa
@@ -197,12 +193,6 @@ DEFAULT_EVENTS = ["add", "update", "delete"]
 ) @
 
 # -- PRIVATE -------------------------------------------------------------------
-_guid = ->
-  'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace /[xy]/g, (c) ->
-    r = Math.random() * 16 | 0
-    v = if c is 'x' then r else r & 3 | 8
-    v.toString 16
-  .toUpperCase()
 
 _cast = (value, define = type: String) ->
   if define.type isnt Date and define.type isnt Array
@@ -213,7 +203,33 @@ _cast = (value, define = type: String) ->
     value or define.type define.default
 
 _constructorUpdate = (state, className) ->
-  for callback in className.callbacks
-    if state.type is "update" and state.type in className.events
+  for observer in className.observers
+    if state.type is 'update' and state.type in className.events
       delete state.object.observer
-      callback state
+      observer state
+
+_existObserver = (observers, callback) ->
+  exists = false
+  for observer in observers when observer is callback
+    exists = true
+    break
+  exists
+
+_guid = ->
+  'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace /[xy]/g, (c) ->
+    r = Math.random() * 16 | 0
+    v = if c is 'x' then r else r & 3 | 8
+    v.toString 16
+  .toUpperCase()
+
+_unobserve = (instance, callback) ->
+  for observe, index in instance.observers
+    if callback
+      if observe is callback
+        Object.unobserve instance, observe
+        instance.observers.splice index, 1
+        break
+    else
+      Object.unobserve instance, observe
+  instance.observers = [] unless callback
+  instance.observers
