@@ -50,7 +50,6 @@ DEFAULT_EVENTS = ['add', 'update', 'delete']
     @return {array}   Array of Hamsa instances
     ###
     @find: (document = {}) ->
-      console.warn '@find', document
       records = []
       for uid, record of @records
         exists = true
@@ -71,9 +70,7 @@ DEFAULT_EVENTS = ['add', 'update', 'delete']
     @return {object}  Hamsa instance.
     ###
     @findOne: (query) ->
-      @find
-        query: query
-        amount: 1
+      @find(query: query)[0]
 
     ###
     Modifies and returns a single instance
