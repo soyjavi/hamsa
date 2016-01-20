@@ -21,10 +21,10 @@ DEFAULT_EVENTS = ['add', 'update', 'delete']
     @param  {string}    Unknown arguments, each argument is the name of field.
     ###
     @define: (@fields = {}) ->
-      @events     = []
-      @names      = (field for field of @fields)
-      @observers  = []
-      @records    = {}
+      @events = []
+      @names = (field for field of @fields)
+      @observers = []
+      @records = {}
       @
 
     ###
@@ -47,27 +47,33 @@ DEFAULT_EVENTS = ['add', 'update', 'delete']
     Returns instances of the defined Hamsa Class
     @method find
     @param  {object}  [OPTIONAL] Specifies selection criteria using query operators.
-                      To return all instances, omit this parameter.
     @return {array}   Array of Hamsa instances
     ###
-    @find: (query = {}) ->
+    @find: (document = {}) ->
+      console.warn '@find', document
       records = []
       for uid, record of @records
         exists = true
-        for field, value of query when exists
+        for field, value of document.query when exists
           exists = false if _cast(record[field], @fields[field]) isnt value
         records.push record if exists
-      records
+
+      if document.sort?
+        field = Object.keys(document.sort)[0]
+        records = _sort records, field, document.sort[field]
+
+      if document.limit? then records[0...document.limit] else records
 
     ###
     Returns one instance that satisfies the specified query criteria
     @method findOne
     @param  {object}  [OPTIONAL] Specifies selection criteria using query operators.
-                      To return the first instance, omit this parameter.
     @return {object}  Hamsa instance.
     ###
     @findOne: (query) ->
-      @find(query)[0]
+      @find
+        query: query
+        amount: 1
 
     ###
     Modifies and returns a single instance
@@ -75,7 +81,7 @@ DEFAULT_EVENTS = ['add', 'update', 'delete']
     @param  {object}  Document parameter with the embedded document fields.
     @return {object}  Hamsa instance.
     ###
-    @findAndModify: (document) ->
+    @findAndModify: (document = {}) ->
       record = @findOne document.query
       record[key] = value for key, value of document.update if record
       record or new @ document.update
@@ -193,7 +199,6 @@ DEFAULT_EVENTS = ['add', 'update', 'delete']
 ) @
 
 # -- PRIVATE -------------------------------------------------------------------
-
 _cast = (value, define = type: String) ->
   if define.type isnt Date and define.type isnt Array
     define.type value or define.default
@@ -221,6 +226,15 @@ _guid = ->
     v = if c is 'x' then r else r & 3 | 8
     v.toString 16
   .toUpperCase()
+
+_sort = (items, field, direction) ->
+  items.sort (a, b) ->
+    if a[field] > b[field]
+      -1 * direction
+    else if a[field] < b[field]
+      +1 * direction
+    else
+      0
 
 _unobserve = (instance, callback) ->
   for observe, index in instance.observers

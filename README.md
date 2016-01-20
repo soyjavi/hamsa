@@ -1,6 +1,6 @@
 hamsa
 =====
-A dead simple, data-binding & observable model.
+A dead simple, data-binding & observable model with EcmaScript6.
 
 
 #### IS hamsa FOR YOU?
@@ -162,24 +162,47 @@ do Contact.destroyAll
 ```
 
 ####SELECT YOUR hamsa INSTANCES
-Finally you will learn how to select instances of a particular Hamsa Class. To do this we will use the class method `find` which receives a filtering function and returns an array of instances that fulfill that function.
+Finally you will learn how to find instances of a particular Hamsa Class. To do this we will use the class method <code>find</code> which receives a selection criteria using a object and returns an array of instances that fulfill that function. To return all documents in a collection, omit this parameter or pass an empty object.
+
++ **query**: *Optional*. The selection criteria for the modification.        
++ **sort**: **Optional**. Specify in the sort parameter the field or fields to sort by and a value of `1` or `-1` to specify an ascending or descending sort respectively.       
++ **limit**: *Optional*. To specify the maximum number of documents the cursor will return
++ 
 
 ```
-Contact.find (instance) ->
-  if instance.since < 2014 and instance.username is "@javi"
+Contact.find 
+  query: since: 2014, username: '@javi'
+  sort: username: -1
+  amount: 3
 
 ###
 > [ {username: "@javi", ...} ]
 ###
 ```
 
-In case you want to filter for a particular field you can use the method of `findBy` class. Unlike with the `find` method in this case you must set two parameters, the first is the field you want to filter and the second one the exact search value.
-
-Contact.findBy "username", "@javi"
+In case you want to find a particular instance you can use the class method `findOne`:
 
 ```
+Contact.findOne since: 2014
+
 ###
-> [{username: "@javi", ...}]
+> {username: "@javi", ...}
 ###
 ```
 
+In case you want to find and modify a single instance you can use the class method `findAndModify`. This method recibes a document parameter with the embedded document fields.
+
++ **query**: *Optional*. The selection criteria for the modification. The query field employs the same query selectors as used in the `find` method. Although the query may match multiple documents, `findAndModify` will only select one document to modify.         
++ **update**: Must specify either the update field. Performs an update of the selected document.         
++ **upsert**: *Optional*. When `true`, `findAndModify` creates a new instance if no document matches the query or if documents match the query.
+
+```
+Contact.findAndModify
+  query: since: 2014, username: '@javi'
+  update: username: '@soyjavi'
+  upsert: true
+
+###
+> {username: '@soyjavi', ...}
+###
+```
