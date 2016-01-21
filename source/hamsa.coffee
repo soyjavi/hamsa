@@ -59,7 +59,7 @@ DEFAULT_EVENTS = ['add', 'update', 'delete']
 
       if document.sort?
         field = Object.keys(document.sort)[0]
-        records = _sort records, field, document.sort[field]
+        records = _sort records, field, document.sort[field], @fields[field].type
 
       if document.limit? then records[0...document.limit] else records
 
@@ -176,8 +176,8 @@ DEFAULT_EVENTS = ['add', 'update', 'delete']
       if trigger
         for callback in @observers
           callback
-            type    : 'destroy'
-            name    : @uid
+            type: 'destroy'
+            name: @uid
             oldValue: @fields()
       delete @constructor.records[@uid]
 
@@ -224,9 +224,11 @@ _guid = ->
     v.toString 16
   .toUpperCase()
 
-_sort = (items, field, direction) ->
+_sort = (items, field, direction, type = String) ->
   items.sort (a, b) ->
-    if a[field] > b[field]
+    if type is Number
+      (b[field] - a[field]) * direction
+    else if a[field] > b[field]
       -1 * direction
     else if a[field] < b[field]
       +1 * direction
