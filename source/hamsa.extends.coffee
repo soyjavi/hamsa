@@ -8,7 +8,7 @@ Easy way for extends Javascript 'Classes'
 ###
 "use strict"
 
-window._extends = (child, parent) ->
+window?._extends = (child, parent) ->
 
   ctor = ->
     @constructor = child
@@ -21,4 +21,4 @@ window._extends = (child, parent) ->
   child.__super__ = parent.prototype
   child
 
-window._hasProp = {}.hasOwnProperty
+window?._hasProp = {}.hasOwnProperty
