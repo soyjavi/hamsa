@@ -20,41 +20,43 @@ class window.Contact extends Hamsa
 
 # -- Observe
 state1 = (state) ->
-  console.log "1.Observe [#{state.type}]", state.object.username
+  console.log "1.Observe [#{state.type}]", state.object?.username or state.oldValue?.username, state.object
 state2 = (state) ->
   console.info " 2.Observe [#{state.type}]", state.object.username
 state3 = (state) ->
   console.error "  3.Observe [#{state.type}]", state.object.username
 
 Contact.observe state1
-Contact.observe state2
+# Contact.observe state2
 
-new Contact id: i, username: "user_#{i}",  name: "name_#{i}" for i in [1..5]
-javi = new Contact username: 'soyjavi'
-javi.observe state3
-javi.username = '@soyjavi'
-
-setTimeout =>
-  console.log '1000ms'
-  Contact.unobserve state2
-  # javi.unobserve()
-, 1000
-
-setTimeout =>
-  new Contact id: i, username: "user_#{i}",  name: "name_#{i}" for i in [6..10]
-  javi.username = 'javi'
-, 2000
+# new Contact id: i, username: "user_#{i}",  name: "name_#{i}" for i in [1..5]
+javi = new Contact username: 'soyjavi', name: 'javi', since: 1980
+# javi.observe state3
+# javi.username = '@soyjavi'
+#
+# setTimeout =>
+#   console.log '1000ms'
+#   Contact.unobserve state2
+#   # javi.unobserve()
+# , 1000
+#
+# setTimeout =>
+#   new Contact id: i, username: "user_#{i}",  name: "name_#{i}" for i in [6..10]
+#   javi.username = 'javi'
+# , 2000
 
 
 # console.log Contact.find()
 
 # console.log Contact.find id: 1, username: 'user_1'
 
-
-# console.log Contact.findAndModify
-#   query : id: 1, name: 'name_1'
-#   update: username: 'one'
-#   upsert: false
+setTimeout =>
+  console.log Contact.findAndModify
+    # query : id: 1, name: 'soyjavi'
+    query : username: 'soyjavi'
+    update: username: '♥️', name: '😳', since: 1980
+    upsert: false
+, 100
 
 # console.log Contact.findAndModify
 #   query : id: 123, name: 'name_1'

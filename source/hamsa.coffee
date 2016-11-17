@@ -80,8 +80,11 @@ DEFAULT_EVENTS = ['add', 'update', 'delete']
     ###
     @findAndModify: (document = {}) ->
       record = @findOne document.query
-      record[key] = value for key, value of document.update if record
-      record or new @ document.update
+      if record
+        record[key] = value for key, value of document.update
+      else if document.upsert
+        record = new @ document.update
+      record
 
     ###
     Observe changes in instance repository.
@@ -136,8 +139,10 @@ DEFAULT_EVENTS = ['add', 'update', 'delete']
         @observers.push callback
       else if not callback and 'update' in @constructor?.events
         Object.observe @, (states) =>
-          for state in states when state.object.constructor is @constructor
-            if state.name in @constructor.names
+          uids = []
+          for state in states when state.object.constructor is @constructor and uid = state.object.uid
+            if state.name in @constructor.names and uid not in uids
+              uids.push uid
               _constructorUpdate state, @constructor
         , ['update']
       @
