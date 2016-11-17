@@ -1,17 +1,17 @@
 {
   "name"                        : "hamsa",
-  "version"                     : "0.12.3",
+  "version"                     : "0.13.0",
   "description"                 : "A dead simple, data-binding & observable model.",
-  "homepage"                    : "http://gethamsa.com",
+  "homepage"                    : "https://github.com/soyjavi/hamsa",
   "author"                      : {
     "name"                      : "Javi Jimenez Villar",
-    "mail"                      : "javi.jimenez.villar@gmail.com",
+    "mail"                      : "hello@soyjavi.com",
     "twitter"                   : "@soyjavi",
     "site"                      : "http://soyjavi.com" },
   "license"                     : "MIT",
   "main"                        : "./dist",
   "dependencies"                : {
-    "coffee-script"               : "^1.8.0" },
+    "coffee-script"               : "^1.11.0" },
   "devDependencies"             : {
     "gulp"                      : "^3.8.8",
     "gulp-coffee"               : "*",
@@ -19,7 +19,6 @@
     "gulp-connect"              : "*",
     "gulp-header"               : "*",
     "gulp-jasmine"              : "*",
-    "gulp-stylus"               : "*",
     "gulp-uglify"               : "*",
     "gulp-util"                 : "*",
     "karma"                     : "*",
