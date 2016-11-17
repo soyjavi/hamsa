@@ -1,7 +1,12 @@
 /**
  * hamsa - A dead simple, data-binding & observable model.
+<<<<<<< HEAD
  * @version v0.13.0
  * @link    https://github.com/soyjavi/hamsa
+=======
+ * @version v0.4.26
+ * @link    http://gethamsa.com
+>>>>>>> 155f8adb30693ca443b4d4e769ad697c93322aa7
  * @author  Javi Jimenez Villar (http://soyjavi.com)
  * @license MIT
  */
