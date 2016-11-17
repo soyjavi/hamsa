@@ -10,7 +10,6 @@ header  = require "gulp-header"
 jasmine = require "gulp-jasmine"
 karma   = require('karma').server
 uglify  = require "gulp-uglify"
-stylus  = require "gulp-stylus"
 pkg     = require "./package.json"
 
 # -- FILES ---------------------------------------------------------------------
@@ -76,33 +75,9 @@ gulp.task "karma", ["source", "spec"], (done) ->
     singleRun : false
   , done
 
-# -- gh-pages
-gulp.task "stylus", ->
-  gulp.src path.page.styl
-    .pipe concat "site.styl"
-    .pipe stylus
-      compress: true
-      errors  : true
-    .pipe header banner, pkg: pkg
-    .pipe gulp.dest path.page.folder
-    .pipe connect.reload()
-
-gulp.task "coffee", ->
-  gulp.src path.page.coffee
-    .pipe concat "site.coffee"
-    .pipe coffee().on "error", gutil.log
-    .pipe gulp.dest path.build
-    .pipe uglify mangle: true
-    .pipe header banner, pkg: pkg
-    .pipe gulp.dest path.page.folder
-    .pipe connect.reload()
-
 gulp.task "init", ["source", "spec", "test", "karma"]
 
 gulp.task "default", ->
   gulp.run ["webserver"]
   # gulp.watch path.coffee, ["karma"]
   gulp.watch path.coffee, ["source", "spec", "test"]
-  # gh-pages
-  gulp.watch path.page.styl, ["stylus"]
-  gulp.watch path.page.coffee, ["coffee"]
